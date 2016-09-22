@@ -10,12 +10,13 @@ gokay generated Validate functions will return an ErrorMap that implements the E
 
 This project uses [Glide](https://github.com/Masterminds/glide) to manage it's dependencies. Please refer to the glide docs to see how to install and use glide.
 
+This project is tested on go 1.7.1 and glide 0.12.1
+
 ```bash
 mkdir -p $GOPATH/github.com/zencoder
 cd $GOPATH/github.com/zencoder
 git clone https://github.com/zencoder/gokay
 cd gokay
-export GO15VENDOREXPERIMENT=1
 glide install
 go install ./...
 ```
