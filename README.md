@@ -1,4 +1,4 @@
-# gokay
+# gokay [![CircleCI](https://circleci.com/gh/zencoder/gokay.svg?style=svg&circle-token=90f42bc5cbb6fe74834f7649d67298130431d88d)](https://circleci.com/gh/zencoder/gokay) [![Coverage Status](https://coveralls.io/repos/github/zencoder/gokay/badge.svg?branch=circle-fixes&t=A2kWWv)](https://coveralls.io/github/zencoder/gokay?branch=circle-fixes)
 Codegenerated struct validation tool for go.
 
 ## How it works
@@ -10,12 +10,13 @@ gokay generated Validate functions will return an ErrorMap that implements the E
 
 This project uses [Glide](https://github.com/Masterminds/glide) to manage it's dependencies. Please refer to the glide docs to see how to install and use glide.
 
+This project is tested on go 1.7.1 and glide 0.12.1
+
 ```bash
 mkdir -p $GOPATH/github.com/zencoder
 cd $GOPATH/github.com/zencoder
 git clone https://github.com/zencoder/gokay
 cd gokay
-export GO15VENDOREXPERIMENT=1
 glide install
 go install ./...
 ```
