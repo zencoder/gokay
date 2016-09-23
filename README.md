@@ -55,7 +55,7 @@ Validations tags are comma separated, with Validation parameters delineated by o
 
 In the above example, the `Hex` and `NotNil` Validations are parameterless, whereas length requires 1 parameter.
 
-### Built-in Validations*
+### Built-in Validations
 Name | Params | Allowed Field Types | Description
 ---- | ------------------- | ------ | -----------
 Hex  | N/A | `(*)string` | Checks if a string field is a valid hexadecimal format number (0x prefix optional)
@@ -63,7 +63,7 @@ NotNil | N/A | pointers | Checks and fails if a pointer is nil
 Length | 1 | `(*)string` | Checks if a string's length matches the tag's parameter
 UUID | N/A | `(*)string` | Checks and fails if a string is not a valid UUID
 
-### Implicitly generated validations*
+### Implicitly generated validations
 These sections of code will be added to the generated `Validate()` function regardless of a field's `valid` tag's contents.
 If a struct does not have any `valid` tags and no fields with implicit validation rules, then no Validate method will be generated.
 
