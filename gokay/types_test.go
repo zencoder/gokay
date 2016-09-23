@@ -9,22 +9,28 @@ import (
 	"github.com/zencoder/gokay/gokay"
 )
 
+// NoValidate
 type NoValidate struct{}
 
+// HasValidate
 type HasValidate struct{}
 
+// Validate
 func (s HasValidate) Validate() error {
 	return errors.New("Validating 'HasValidate' instance")
 }
 
+// GokayTypesTestSuite
 type GokayTypesTestSuite struct {
 	suite.Suite
 }
 
+// TestGokayTypesTestSuite
 func TestGokayTypesTestSuite(t *testing.T) {
 	suite.Run(t, new(GokayTypesTestSuite))
 }
 
+// TestValidate
 func (s *GokayTypesTestSuite) TestValidate() {
 	a := HasValidate{}
 	b := &HasValidate{}
@@ -40,39 +46,43 @@ func (s *GokayTypesTestSuite) TestValidate() {
 	s.Nil(err)
 }
 
-func (s *GokayTypesTestSuite) TestErrorArrayError_Empty() {
-	ea := gokay.ErrorArray{}
+// TestErrorSliceError_Empty
+func (s *GokayTypesTestSuite) TestErrorSliceError_Empty() {
+	ea := gokay.ErrorSlice{}
 
 	s.Equal("[]", ea.Error())
 }
 
-func (s *GokayTypesTestSuite) TestErrorArrayError_MultiElements() {
-	ea := gokay.ErrorArray{
+// TestErrorSliceError_MultiElements
+func (s *GokayTypesTestSuite) TestErrorSliceError_MultiElements() {
+	ea := gokay.ErrorSlice{
 		errors.New("foo"),
 		errors.New("bar"),
 		nil,
-		gokay.ErrorArray{errors.New("this is"), errors.New("nested")},
+		gokay.ErrorSlice{errors.New("this is"), errors.New("nested")},
 	}
 
 	s.Equal("[\"foo\",\"bar\",null,[\"this is\",\"nested\"]]", ea.Error())
 }
 
+// TestErrorMapError_Empty
 func (s *GokayTypesTestSuite) TestErrorMapError_Empty() {
 	em := gokay.ErrorMap{}
 
 	s.Equal("{}", em.Error())
 }
 
+// TestErrorMapError_MultipleValues
 func (s *GokayTypesTestSuite) TestErrorMapError_MultipleValues() {
 	em := gokay.ErrorMap{
 		"flat":                errors.New(`"flat" "error"`),
-		"nestedErrorArray":    gokay.ErrorArray{errors.New("this is"), errors.New("nested")},
+		"nestedErrorSlice":    gokay.ErrorSlice{errors.New("this is"), errors.New("nested")},
 		"nestedEmptyErrorMap": make(gokay.ErrorMap),
 	}
 
 	expectedJSONAsMap := make(map[string]interface{})
 	actualJSONAsMap := make(map[string]interface{})
-	json.Unmarshal([]byte(`{"flat": "\"flat\" \"error\"","nestedErrorArray": ["this is","nested"],"nestedEmptyErrorMap": {}}`), &expectedJSONAsMap)
+	json.Unmarshal([]byte(`{"flat": "\"flat\" \"error\"","nestedErrorSlice": ["this is","nested"],"nestedEmptyErrorMap": {}}`), &expectedJSONAsMap)
 	json.Unmarshal([]byte(em.Error()), &actualJSONAsMap)
 
 	s.Equal(expectedJSONAsMap, actualJSONAsMap)

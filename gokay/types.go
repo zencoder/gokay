@@ -6,10 +6,11 @@ import (
 	"strings"
 )
 
-// ErrorMap contains an entry for each invalid field in a struct. Values can be any struct that implements the go Error interface, including nested ErrorMaps.
+// ErrorMap contains an entry for each invalid field in a struct. Values can be
+// any struct that implements the go Error interface, including nested ErrorMaps.
 type ErrorMap map[string]error
 
-// Returns a JSON formatted representation of the ErrorMap.
+// Error returns a JSON formatted representation of the ErrorMap.
 func (em ErrorMap) Error() string {
 	out := &bytes.Buffer{}
 	out.WriteRune('{')
@@ -19,7 +20,7 @@ func (em ErrorMap) Error() string {
 		}
 		if v != nil {
 			switch v.(type) {
-			case ErrorArray, ErrorMap:
+			case ErrorSlice, ErrorMap:
 				fmt.Fprintf(out, `"%s": %s`, k, v.Error())
 			default:
 				fmt.Fprintf(out, `"%s": "%s"`, k, strings.Replace(v.Error(), `"`, `\"`, -1))
@@ -32,13 +33,13 @@ func (em ErrorMap) Error() string {
 	return out.String()
 }
 
-// ErrorArray is a slice of errors.
-// Typically an ErrorArray will be an entry in the ErrorMap outputted by a generated Validate function, each element
+// ErrorSlice is a slice of errors. Typically an ErrorSlice will be an entry
+// in the ErrorMap outputted by a generated Validate function, each element
 // of the array represents a failed validation on that field.
-type ErrorArray []error
+type ErrorSlice []error
 
-// Returns a JSON formatted representation of the ErrorArray
-func (ea ErrorArray) Error() string {
+// Returns a JSON formatted representation of the ErrorSlice
+func (ea ErrorSlice) Error() string {
 	out := &bytes.Buffer{}
 	out.WriteRune('[')
 	for i := range ea {
@@ -47,7 +48,7 @@ func (ea ErrorArray) Error() string {
 		}
 		if ea[i] != nil {
 			switch ea[i].(type) {
-			case ErrorArray, ErrorMap:
+			case ErrorSlice, ErrorMap:
 				fmt.Fprintf(out, `%s`, ea[i].Error())
 			default:
 				fmt.Fprintf(out, `"%s"`, strings.Replace(ea[i].Error(), `"`, `\"`, -1))
@@ -60,17 +61,18 @@ func (ea ErrorArray) Error() string {
 	return out.String()
 }
 
-// Validateable specifies a generic error return type instead of an ErrorMap return type in order to allow for handwritten Validate methods to work
-// in tandem with gokay generated Validate methods.
+// Validateable specifies a generic error return type instead of an
+// ErrorMap return type in order to allow for handwritten Validate
+// methods to work in tandem with gokay generated Validate methods.
 type Validateable interface {
 	Validate() error
 }
 
-// Calls validate on structs that implement the Validateable interface. If they do not, then that struct is valid.
+// Validate calls validate on structs that implement the Validateable
+// interface. If they do not, then that struct is valid.
 func Validate(i interface{}) error {
 	if v, ok := i.(Validateable); ok {
 		return v.Validate()
-	} else {
-		return nil
 	}
+	return nil
 }
