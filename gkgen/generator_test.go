@@ -25,14 +25,16 @@ func (s *ValidatorTestSuite) SetupTest() {}
 
 // TestAddValidation
 func (s *ValidatorTestSuite) TestAddValidation() {
-	v := gkgen.ValidateGenerator{make(map[string]gkgen.Validater)}
-	validator := gkgen.NewNotNilValidator()
+	v := gkgen.ValidateGenerator{
+		Generators: make(map[string]gkgen.Generater),
+	}
+	generator := gkgen.NewNotNilValidator()
 
-	_, ok := v.Validaters[validator.Name()]
+	_, ok := v.Generators[generator.Name()]
 	s.False(ok)
 
-	v.AddValidation(validator)
-	_, ok = v.Validaters[validator.Name()]
+	v.AddValidation(generator)
+	_, ok = v.Generators[generator.Name()]
 	s.True(ok)
 }
 
@@ -44,7 +46,7 @@ func (s *ValidatorTestSuite) TestExampleStruct() {
 		HexStringPtr: &key,
 	}
 
-	v := gkgen.NewValidator()
+	v := gkgen.NewValidateGenerator()
 
 	err := v.Generate(out, e)
 	s.Nil(err)
@@ -58,7 +60,7 @@ type UnknownTagStruct struct {
 // TestGenerateWithUnknownTag
 func (s *ValidatorTestSuite) TestGenerateWithUnknownTag() {
 	out := &bytes.Buffer{}
-	v := gkgen.NewValidator()
+	v := gkgen.NewValidateGenerator()
 	err := v.Generate(out, UnknownTagStruct{})
 	s.Equal(errors.New("Unknown validation generator name: 'Unknown'"), err)
 }

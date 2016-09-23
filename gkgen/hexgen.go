@@ -17,8 +17,8 @@ func NewHexValidator() *HexValidator {
 	return &HexValidator{name: "Hex"}
 }
 
-// GenerateValidationCode
-func (s *HexValidator) GenerateValidationCode(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+// Generate
+func (s *HexValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("Hex takes no parameters")
 	}

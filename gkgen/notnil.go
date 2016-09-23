@@ -19,7 +19,7 @@ func NewNotNilValidator() *NotNilValidator {
 }
 
 // GenerateValidationCode
-func (s *NotNilValidator) GenerateValidationCode(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+func (s *NotNilValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("NotNil takes no parameters")
 	}

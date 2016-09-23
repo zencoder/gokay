@@ -152,3 +152,24 @@ func (suite *TagParserTestSuite) TestParseTag2ValidationsWith1ParamEach() {
 	assert.Equal(suite.T(), 1, len(vcs[1].Params))
 	assert.Equal(suite.T(), "foo0", vcs[1].Params[0])
 }
+
+// Intptr provides an int typed pointer
+func Intptr(v int) *int {
+	p := new(int)
+	*p = v
+	return p
+}
+
+// Float64ptr provides a float64 typed pointer
+func Float64ptr(v float64) *float64 {
+	p := new(float64)
+	*p = v
+	return p
+}
+
+// Boolptr provides a boolean typed pointer
+func Boolptr(v bool) *bool {
+	p := new(bool)
+	*p = v
+	return p
+}

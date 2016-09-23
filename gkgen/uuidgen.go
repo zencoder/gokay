@@ -16,8 +16,8 @@ func NewUUIDValidator() *UUIDValidator {
 	return &UUIDValidator{name: "UUID"}
 }
 
-// GenerateValidationCode
-func (s *UUIDValidator) GenerateValidationCode(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+// Generate
+func (s *UUIDValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("Hex takes no parameters")
 	}

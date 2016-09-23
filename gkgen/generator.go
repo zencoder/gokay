@@ -11,17 +11,17 @@ import (
 
 // ValidateGenerator
 type ValidateGenerator struct {
-	Validaters map[string]Validater
+	Generators map[string]Generater
 }
 
-// NewValidator
+// NewValidateGenerator
 // Default validators:
 // - Hex: checks if a string is a valid hexadecimal format number
 // - Length: takes 1 integer argument and compares the length of a string field against that
 // - NotNil: Validate fails if field is nil
 // - UUID: Checks and fails if a string is not a valid UUID
-func NewValidator() *ValidateGenerator {
-	v := &ValidateGenerator{make(map[string]Validater)}
+func NewValidateGenerator() *ValidateGenerator {
+	v := &ValidateGenerator{make(map[string]Generater)}
 	v.AddValidation(NewNotNilValidator())
 	v.AddValidation(NewLengthValidator())
 	v.AddValidation(NewHexValidator())
@@ -33,8 +33,8 @@ func NewValidator() *ValidateGenerator {
 // AddValidation adds a Validation to a ValidateGenerator, that Validation can be applied to a struct
 // field using the string returned by
 // validater.Name()
-func (s *ValidateGenerator) AddValidation(validater Validater) error {
-	s.Validaters[validater.Name()] = validater
+func (s *ValidateGenerator) AddValidation(g Generater) error {
+	s.Generators[g.Name()] = g
 	return nil
 }
 
@@ -72,10 +72,10 @@ func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
 				return fmt.Errorf("Unable to parse tag: '%v'. Error: '%v'", tag, err)
 			}
 			for _, vc := range vcs {
-				if _, ok := s.Validaters[vc.name]; !ok {
+				if _, ok := s.Generators[vc.name]; !ok {
 					return fmt.Errorf("Unknown validation generator name: '%s'", vc.name)
 				}
-				code, err := s.Validaters[vc.name].GenerateValidationCode(structType, field, vc.Params)
+				code, err := s.Generators[vc.name].Generate(structType, field, vc.Params)
 				fmt.Fprintf(fvBuf, "// %s", vc.name)
 				fmt.Fprintln(fvBuf, code)
 				if err != nil {
@@ -260,6 +260,7 @@ func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName 
 	return nil
 }
 
+// generateSliceValidationCode
 func generateSliceValidationCode(out io.Writer, fieldType reflect.Type, fieldName string, depth int64) error {
 	if fieldType.Kind() != reflect.Slice {
 		return fmt.Errorf("`generateSliceValidationCode` only supports slices and arrays. Not: '%s'", fieldType.Kind())

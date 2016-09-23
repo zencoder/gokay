@@ -27,7 +27,7 @@ func (s *BCP47ValidatorTestSuite) TestGenerateHexValidationCode_String() {
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("BCP47String")
 
-	code, err := hv.GenerateValidationCode(et, field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	s.Nil(err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	s.Equal("if err := gokay.IsBCP47(&s.BCP47String); err != nil {\nerrorsBCP47String = append(errorsBCP47String, err)\n}", code)
@@ -39,7 +39,7 @@ func (s *BCP47ValidatorTestSuite) TestGenerateHexValidationCode_StringPtr() {
 	e := gkexample.ExampleStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("BCP47StringPtr")
-	code, err := hv.GenerateValidationCode(et, field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	s.Nil(err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	s.Equal("if err := gokay.IsBCP47(s.BCP47StringPtr); err != nil {\nerrorsBCP47StringPtr = append(errorsBCP47StringPtr, err)\n}", code)
