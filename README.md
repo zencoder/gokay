@@ -24,7 +24,7 @@ go install ./...
 ## Running gokay
 ### Usage
 ```	sh
-gokay <file_name> [(custom-generator-package) (custom-generator-contructor)]
+gokay <file> [custom-generator-package custom-generator-contructor]
 ```
 
 ### Examples
@@ -106,7 +106,7 @@ gokay was built to allow developers to write and attach their own Validations to
 		Name() string
 	}
 	```
-   - GetName returns the string that will be used as a validation tag
+   - Name returns the string that will be used as a validation tag
 
 1. GenerateValidationCode should generate a block will leverage the function defined in step 1.  This block will be inserted into the generated `Validate` function. GenerateValidationCode output example:
     

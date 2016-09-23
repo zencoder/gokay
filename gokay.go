@@ -17,10 +17,19 @@ import (
 	"github.com/pborman/uuid"
 )
 
+const usage = `usage: gokay <file> [generator-package generator-contructor]
+	generator-package
+	generator-contructor
+
+examples:
+	gokay file.go
+	gokay file.go gkcustom NewCustomGKGenerator
+`
+
 func main() {
 	args := os.Args[1:]
 	if len(args) < 1 {
-		log.Println("Usage : gokay <file_name> [{generator-package} {generator-contructor}] \n example: gokay file.go gkcustom NewCustomGKGenerator")
+		fmt.Fprintf(os.Stderr, usage)
 		return
 	}
 	log.Println("gokay started. file:", args[0])
@@ -40,19 +49,24 @@ func main() {
 	tempName := uuid.NewRandom().String()
 
 	tempDir := fmt.Sprintf("%s/%s", fileDir, tempName)
-	err := os.Mkdir(tempDir, os.ModePerm)
+	if err := os.Mkdir(tempDir, os.ModePerm); err != nil {
+		log.Fatalf("Error creating directory %v: %v\n", tempDir, err)
+	}
 	tempFile := fmt.Sprintf("%s/%s.go", tempDir, tempName)
 
 	outFilePath := fmt.Sprintf("%s_validators.go", strings.TrimSuffix(fileName, filepath.Ext(fileName)))
 	tempOut, err := os.Create(tempFile)
+	if err != nil {
+		log.Fatalf("Error while opening %v: %v\n", tempFile, err)
+	}
 	defer tempOut.Close()
 
 	outWriter := io.MultiWriter(tempOut, os.Stdout)
 
 	fmt.Println(tempDir)
-	//	fmt.Println(err.Error())
 
 	fset := token.NewFileSet() // positions are relative to fset
+
 	// Parse the file given in arguments
 	f, err := parser.ParseFile(fset, fileName, nil, parser.ParseComments)
 	if err != nil {
@@ -75,7 +89,7 @@ func main() {
 		v := %s.%s()
 	`, outFilePath, f.Name.String(), genPackage, genConstructor)
 
-	sortedObjectKeys := make([]string, 0, len(f.Scope.Objects))
+	sortedObjectKeys := make([]string, len(f.Scope.Objects))
 	for k := range f.Scope.Objects {
 		sortedObjectKeys = append(sortedObjectKeys, k)
 	}
@@ -100,29 +114,25 @@ func main() {
 	tmpimportsCmd := exec.Command("goimports", "-w", tempOut.Name())
 	tmpimportsCmd.Stdout = os.Stdout
 	tmpimportsCmd.Stderr = os.Stderr
-	err = tmpimportsCmd.Run()
-	if err != nil {
+	if err := tmpimportsCmd.Run(); err != nil {
 		log.Fatalf("Failed running goimports on intermediate executable code: %v\n", err.Error())
 	}
 
 	generateCmd := exec.Command("go", "run", tempFile)
 	generateCmd.Stderr = os.Stderr
 	generateCmd.Stdout = os.Stdout
-	err = generateCmd.Run()
-	if err != nil {
+	if err := generateCmd.Run(); err != nil {
 		log.Fatalf("Failed executing intermediate executable to generate gokay validators failed: %v\n", err.Error())
 	}
 
 	importsCmd := exec.Command("goimports", "-w", outFilePath)
 	importsCmd.Stdout = os.Stdout
 	importsCmd.Stderr = os.Stderr
-	err = importsCmd.Run()
-	if err != nil {
+	if err := importsCmd.Run(); err != nil {
 		log.Fatalf("Failed running imports on gokay validators: %v\n", err.Error())
 	}
 
-	err = os.RemoveAll(tempDir)
-	if err != nil {
+	if err := os.RemoveAll(tempDir); err != nil {
 		log.Printf("Warning: Deleting intermediate temp files %v failed (although gokay run appears to have succeeded): %v\n", tempDir, err.Error())
 	}
 
