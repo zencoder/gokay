@@ -133,7 +133,7 @@ gokay was built to allow developers to write attach their own Validations to the
 
 ### Dependencies
 
-Tested on go 1.5.1.
+Tested on go 1.7.1.
 
 ### Build and run unit tests
 
