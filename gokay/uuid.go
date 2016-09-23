@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// IsUUID
 func IsUUID(s *string) error {
 	if s == nil {
 		return nil
@@ -21,3 +22,4 @@ func IsUUID(s *string) error {
 
 	return nil
 }
+
