@@ -7,17 +7,19 @@ import (
 	"strconv"
 )
 
-// LengthValidator generates code that will verify the exact length of a String or String Pointer field.
+// LengthValidateGen generates code that will verify the exact length of a String or String Pointer field.
 // Slice and Array support coming later.
 // It will flag nil string pointers as valid, use in conjunction with NotNil validator if you don't want nil values
 type LengthValidateGen struct {
-	Name string
+	name string
 }
 
+// NewLengthValidator
 func NewLengthValidator() *LengthValidateGen {
-	return &LengthValidateGen{Name: "Length"}
+	return &LengthValidateGen{name: "Length"}
 }
 
+// GenerateValidationCode
 func (s *LengthValidateGen) GenerateValidationCode(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 1 {
 		return "", errors.New("Length validation requires exactly 1 parameter")
@@ -37,7 +39,7 @@ func (s *LengthValidateGen) GenerateValidationCode(sType reflect.Type, fieldStru
 
 	switch field.Kind() {
 	case reflect.Ptr:
-		return "", errors.New("LengthValidator does not support nested pointer fields.")
+		return "", errors.New("LengthValidator does not support nested pointer fields")
 	case reflect.String:
 		if isPtr {
 			return fmt.Sprintf(`
@@ -45,25 +47,23 @@ func (s *LengthValidateGen) GenerateValidationCode(sType reflect.Type, fieldStru
 					errors%[2]s = append(errors%[2]s, err)
 				}
 				`, expectedLength, fieldStruct.Name), nil
-		} else {
-			return fmt.Sprintf(`
-				if err := gokay.LengthString(%d, &s.%[2]s); err != nil {
-					errors%[2]s = append(errors%[2]s, err)
-				}
-				`, expectedLength, fieldStruct.Name), nil
 		}
-
+		return fmt.Sprintf(`
+			if err := gokay.LengthString(%d, &s.%[2]s); err != nil {
+				errors%[2]s = append(errors%[2]s, err)
+			}
+			`, expectedLength, fieldStruct.Name), nil
 	case reflect.Slice, reflect.Array:
 		return "", errors.New("Length validator does not yet support Slice or Arrays")
 	default:
 		if isPtr {
 			return "", fmt.Errorf("LengthValidator does not support fields of type: '*%v'", field.Kind())
-		} else {
-			return "", fmt.Errorf("LengthValidator does not support fields of type: '%v'", field.Kind())
 		}
+		return "", fmt.Errorf("LengthValidator does not support fields of type: '%v'", field.Kind())
 	}
 }
 
-func (s *LengthValidateGen) GetName() string {
-	return s.Name
+// Name provides access to the name field
+func (s *LengthValidateGen) Name() string {
+	return s.name
 }

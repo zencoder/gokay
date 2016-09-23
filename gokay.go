@@ -20,7 +20,7 @@ import (
 func main() {
 	args := os.Args[1:]
 	if len(args) < 1 {
-		log.Println("Usage : gokay {file_name} ({generator package} {generator contructor}) \n example: gokay file.go gkcustom NewCustomGKGenerator")
+		log.Println("Usage : gokay <file_name> [{generator-package} {generator-contructor}] \n example: gokay file.go gkcustom NewCustomGKGenerator")
 		return
 	}
 	log.Println("gokay started. file:", args[0])

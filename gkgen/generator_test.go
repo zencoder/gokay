@@ -10,30 +10,33 @@ import (
 	"github.com/zencoder/gokay/internal/gkexample"
 )
 
+// ValidatorTestSuite
 type ValidatorTestSuite struct {
 	suite.Suite
 }
 
+// TestValidatorSuite
 func TestValidatorSuite(t *testing.T) {
 	suite.Run(t, new(ValidatorTestSuite))
 }
 
-func (s *ValidatorTestSuite) SetupTest() {
-}
+// SetupTest
+func (s *ValidatorTestSuite) SetupTest() {}
 
+// TestAddValidation
 func (s *ValidatorTestSuite) TestAddValidation() {
 	v := gkgen.ValidateGenerator{make(map[string]gkgen.Validater)}
 	validator := gkgen.NewNotNilValidator()
 
-	_, ok := v.Validaters[validator.GetName()]
+	_, ok := v.Validaters[validator.Name()]
 	s.False(ok)
 
 	v.AddValidation(validator)
-	_, ok = v.Validaters[validator.GetName()]
+	_, ok = v.Validaters[validator.Name()]
 	s.True(ok)
 }
 
-// Test single no-param validation
+// TestExampleStruct tests single no-param validation
 func (s *ValidatorTestSuite) TestExampleStruct() {
 	out := &bytes.Buffer{}
 	key := "abc123"
@@ -47,10 +50,12 @@ func (s *ValidatorTestSuite) TestExampleStruct() {
 	s.Nil(err)
 }
 
+// UnknownTagStruct
 type UnknownTagStruct struct {
 	Field string `valid:"Length=(5),Unknown"`
 }
 
+// TestGenerateWithUnknownTag
 func (s *ValidatorTestSuite) TestGenerateWithUnknownTag() {
 	out := &bytes.Buffer{}
 	v := gkgen.NewValidator()
