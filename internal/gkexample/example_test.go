@@ -16,10 +16,12 @@ type ExampleTestSuite struct {
 	suite.Suite
 }
 
+// TestExampleTestSuite
 func TestExampleTestSuite(t *testing.T) {
 	suite.Run(t, new(ExampleTestSuite))
 }
 
+// TestNotAValidateable
 func (s *ExampleTestSuite) TestNotAValidateable() {
 	underTest := NoImplicitValidate{}
 
@@ -29,6 +31,7 @@ func (s *ExampleTestSuite) TestNotAValidateable() {
 	s.False(tut.Implements(validateable.Elem()))
 }
 
+// TestHasValidateImplicit
 func (s *ExampleTestSuite) TestHasValidateImplicit() {
 	underTest := HasValidateImplicit{}
 
@@ -38,6 +41,7 @@ func (s *ExampleTestSuite) TestHasValidateImplicit() {
 	s.True(tut.Implements(validateable.Elem()))
 }
 
+// TestHasValidateImplicit_Validate
 func (s *ExampleTestSuite) TestHasValidateImplicit_Validate() {
 	underTest := HasValidateImplicit{
 		InvalidStruct: &TestValidate{},
@@ -60,6 +64,7 @@ func (s *ExampleTestSuite) TestHasValidateImplicit_Validate() {
 	}, ea)
 }
 
+// TestHasValidateImplicit_NilInvalidStruct
 func (s *ExampleTestSuite) TestHasValidateImplicit_NilInvalidStruct() {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -69,6 +74,7 @@ func (s *ExampleTestSuite) TestHasValidateImplicit_NilInvalidStruct() {
 	s.Nil(err)
 }
 
+// TestValidateImplicit_MapOfStruct
 func (s *ExampleTestSuite) TestValidateImplicit_MapOfStruct() {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -121,6 +127,7 @@ func (s *ExampleTestSuite) TestValidateImplicit_MapOfStructPtrs() {
 	s.Equal(expected, err)
 }
 
+// TestValidateImplicit_MapOfMapsOfStructs
 func (s *ExampleTestSuite) TestValidateImplicit_MapOfMapsOfStructs() {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -158,6 +165,7 @@ func (s *ExampleTestSuite) TestValidateImplicit_MapOfMapsOfStructs() {
 	s.Equal(expected, err)
 }
 
+// TestValidateImplicit_MapOfMapsOfSlices
 func (s *ExampleTestSuite) TestValidateImplicit_MapOfMapsOfSlices() {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -230,6 +238,7 @@ func (s *ExampleTestSuite) TestValidateImplicit_MapOfMapsOfSlices() {
 	s.Equal(expected, err)
 }
 
+// TestValidateImplicit_MapOfSlicesOfMaps
 func (s *ExampleTestSuite) TestValidateImplicit_MapOfSlicesOfMaps() {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -294,6 +303,7 @@ func (s *ExampleTestSuite) TestValidateImplicit_MapOfSlicesOfMaps() {
 	s.Equal(expected, err)
 }
 
+// TestValidateImplicit_MapOfInterfaces
 func (s *ExampleTestSuite) TestValidateImplicit_MapOfInterfaces() {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -346,6 +356,7 @@ func (s *ExampleTestSuite) TestValidateImplicit_MapOfInterfaces() {
 	s.Equal(expected, err)
 }
 
+// TestValidateNotNil_Slice
 func (s *ExampleTestSuite) TestValidateNotNil_Slice() {
 	expected := gokay.ErrorMap{
 		"NotNilSlice": gokay.ErrorSlice{errors.New("is Nil")},
@@ -359,6 +370,7 @@ func (s *ExampleTestSuite) TestValidateNotNil_Slice() {
 	s.Equal(expected, err)
 }
 
+// TestValidateNotNil_Map
 func (s *ExampleTestSuite) TestValidateNotNil_Map() {
 	expected := gokay.ErrorMap{
 		"NotNilMap": gokay.ErrorSlice{errors.New("is Nil")},
