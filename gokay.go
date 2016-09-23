@@ -72,8 +72,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error while parsing %v: %v\n", fileName, err)
 	}
-	_, err = ioutil.ReadFile(fileName)
-	if err != nil {
+	if _, err = ioutil.ReadFile(fileName); err != nil {
 		log.Fatalf("IO Error while reading %v: %v\n", fileName, err)
 	}
 
