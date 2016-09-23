@@ -14,7 +14,7 @@ This project is tested on go 1.7.1 and glide 0.12.1
 
 ```bash
 mkdir -p $GOPATH/github.com/zencoder
-cd $GOPATH/github.com/zencoder
+cd $GOPATH/src/github.com/zencoder
 git clone https://github.com/zencoder/gokay
 cd gokay
 glide install
