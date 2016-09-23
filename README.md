@@ -97,12 +97,13 @@ gokay was built to allow developers to write and attach their own Validations to
 	}
     ```
 
-1. Write a struct that implements the `Validater` interface
+1. Write a struct that implements the `Generater` interface
 
     ```go
-    type Validater interface {
-		GenerateValidationCode(reflect.Type, reflect.StructField, []string) (string, error)
-		GetName() string
+	// Generater defines the behavior of types that generate validation code
+    type Generater interface {
+		Generate(reflect.Type, reflect.StructField, []string) (string, error)
+		Name() string
 	}
 	```
    - GetName returns the string that will be used as a validation tag
@@ -123,7 +124,7 @@ gokay was built to allow developers to write and attach their own Validations to
 	
 	// To run: `gokay gkexample NewCustomValidator`
 	func NewCustomGKGenerator() *gkgen.ValidateGenerator {
-		v := gkgen.NewValidator()
+		v := gkgen.NewValidateGenerator()
 		v.AddValidation(NewCustomValidator())
 		return v
 	}
