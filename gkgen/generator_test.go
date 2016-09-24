@@ -1,34 +1,33 @@
-package gkgen_test
+package gkgen
 
 import (
 	"bytes"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
-	"github.com/zencoder/gokay/internal/gkexample"
 )
 
-// ValidatorTestSuite
-type ValidatorTestSuite struct {
+// GeneratorTestSuite
+type GeneratorTestSuite struct {
 	suite.Suite
 }
 
-// TestValidatorSuite
-func TestValidatorSuite(t *testing.T) {
-	suite.Run(t, new(ValidatorTestSuite))
+// TestGeneratorTestSuite
+func TestGeneratorTestSuite(t *testing.T) {
+	suite.Run(t, new(GeneratorTestSuite))
 }
 
 // SetupTest
-func (s *ValidatorTestSuite) SetupTest() {}
+func (s *GeneratorTestSuite) SetupTest() {}
 
 // TestAddValidation
-func (s *ValidatorTestSuite) TestAddValidation() {
-	v := gkgen.ValidateGenerator{
-		Generators: make(map[string]gkgen.Generater),
+func (s *GeneratorTestSuite) TestAddValidation() {
+	v := ValidateGenerator{
+		Generators: make(map[string]Generater),
 	}
-	generator := gkgen.NewNotNilValidator()
+	generator := NewNotNilValidator()
 
 	_, ok := v.Generators[generator.Name()]
 	s.False(ok)
@@ -39,14 +38,14 @@ func (s *ValidatorTestSuite) TestAddValidation() {
 }
 
 // TestExampleStruct tests single no-param validation
-func (s *ValidatorTestSuite) TestExampleStruct() {
+func (s *GeneratorTestSuite) TestExampleStruct() {
 	out := &bytes.Buffer{}
 	key := "abc123"
-	e := gkexample.ExampleStruct{
+	e := ExampleStruct{
 		HexStringPtr: &key,
 	}
 
-	v := gkgen.NewValidateGenerator()
+	v := NewValidateGenerator()
 
 	err := v.Generate(out, e)
 	s.Nil(err)
@@ -58,9 +57,17 @@ type UnknownTagStruct struct {
 }
 
 // TestGenerateWithUnknownTag
-func (s *ValidatorTestSuite) TestGenerateWithUnknownTag() {
+func (s *GeneratorTestSuite) TestGenerateWithUnknownTag() {
 	out := &bytes.Buffer{}
-	v := gkgen.NewValidateGenerator()
+	v := NewValidateGenerator()
 	err := v.Generate(out, UnknownTagStruct{})
 	s.Equal(errors.New("Unknown validation generator name: 'Unknown'"), err)
+}
+
+// TestGenerateMapValidationCode
+func (s *GeneratorTestSuite) TestGenerateMapValidationCode() {
+	out := &bytes.Buffer{}
+	var fieldType reflect.Type
+	err := generateMapValidationCode(out, fieldType, "", int64(1))
+	s.Require().Error(err)
 }

@@ -20,8 +20,7 @@ type ValidateGenerator struct {
 	Generators map[string]Generater
 }
 
-// NewValidateGenerator
-// Default validators:
+// NewValidateGenerator creates a new pointer value of type ValidateGernerator
 // - Hex: checks if a string is a valid hexadecimal format number
 // - Length: takes 1 integer argument and compares the length of a string field against that
 // - NotNil: Validate fails if field is nil

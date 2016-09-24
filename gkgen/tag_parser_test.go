@@ -1,4 +1,4 @@
-package gkgen_test
+package gkgen
 
 import (
 	"io"
@@ -6,8 +6,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
-	"github.com/zencoder/gokay/internal/gkexample"
 )
 
 // EmptyStruct
@@ -30,10 +28,10 @@ func TestTagParserTestSuite(t *testing.T) {
 func (suite *TagParserTestSuite) TestParseTagSingleNoParamValidation() {
 	s := new(EmptyStruct)
 	tag := "bar"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 	assert.Nil(suite.T(), err)
 
-	expectedCommand := gkgen.NewValidationCommand("bar")
+	expectedCommand := NewValidationCommand("bar")
 	assert.Equal(suite.T(), expectedCommand, vcs[0])
 	assert.Equal(suite.T(), 1, len(vcs))
 }
@@ -41,11 +39,11 @@ func (suite *TagParserTestSuite) TestParseTagSingleNoParamValidation() {
 // Test single no-param validation
 func (suite *TagParserTestSuite) TestExampleStruct() {
 	key := "abc123"
-	s := gkexample.ExampleStruct{
+	s := ExampleStruct{
 		HexStringPtr: &key,
 	}
 
-	_, err := gkgen.ParseTag(s, "valid")
+	_, err := ParseTag(s, "valid")
 	assert.Nil(suite.T(), err)
 }
 
@@ -53,14 +51,14 @@ func (suite *TagParserTestSuite) TestExampleStruct() {
 func (suite *TagParserTestSuite) TestParseTagMultipleNoParamValidations() {
 	s := new(EmptyStruct)
 	tag := "bar,biz,buz"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 
 	assert.Nil(suite.T(), err)
-	barCommand := gkgen.NewValidationCommand("bar")
-	bizCommand := gkgen.NewValidationCommand("biz")
-	buzCommand := gkgen.NewValidationCommand("buz")
+	barCommand := NewValidationCommand("bar")
+	bizCommand := NewValidationCommand("biz")
+	buzCommand := NewValidationCommand("buz")
 
-	expectedVcs := []gkgen.ValidationCommand{barCommand, bizCommand, buzCommand}
+	expectedVcs := []ValidationCommand{barCommand, bizCommand, buzCommand}
 
 	assert.Equal(suite.T(), expectedVcs, vcs)
 }
@@ -69,7 +67,7 @@ func (suite *TagParserTestSuite) TestParseTagMultipleNoParamValidations() {
 func (suite *TagParserTestSuite) TestParseTagLeadingComma() {
 	s := new(EmptyStruct)
 	tag := ",bar"
-	_, err := gkgen.ParseTag(s, tag)
+	_, err := ParseTag(s, tag)
 	suite.NotNil(err)
 }
 
@@ -77,13 +75,13 @@ func (suite *TagParserTestSuite) TestParseTagLeadingComma() {
 func (suite *TagParserTestSuite) TestParseTagTrailingCommas() {
 	s := new(EmptyStruct)
 	tag := "bar,"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 	assert.Nil(suite.T(), err)
-	expectedVcs := []gkgen.ValidationCommand{gkgen.NewValidationCommand("bar")}
+	expectedVcs := []ValidationCommand{NewValidationCommand("bar")}
 	assert.Equal(suite.T(), expectedVcs, vcs)
 
 	tag = "two_commas,,"
-	_, err = gkgen.ParseTag(s, tag)
+	_, err = ParseTag(s, tag)
 	suite.NotNil(err)
 }
 
@@ -91,7 +89,7 @@ func (suite *TagParserTestSuite) TestParseTagTrailingCommas() {
 func (suite *TagParserTestSuite) TestParseTagWithConstParam() {
 	s := new(EmptyStruct)
 	tag := "bar=(hello world,\\)How are you?)"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 1, len(vcs))
 	assert.Equal(suite.T(), "bar", vcs[0].Name())
@@ -102,32 +100,32 @@ func (suite *TagParserTestSuite) TestParseTagWithConstParam() {
 func (suite *TagParserTestSuite) TestParseTagWithConstParamSyntaxError() {
 	s := new(EmptyStruct)
 	tag := "bar=(?foo\\)[biz]"
-	_, err := gkgen.ParseTag(s, tag)
+	_, err := ParseTag(s, tag)
 	suite.NotNil(err)
 }
 
 func (suite *TagParserTestSuite) TestParseTagMissingParamSyntaxError() {
 	s := new(EmptyStruct)
 	tag := "bar=,foo"
-	_, err := gkgen.ParseTag(s, tag)
+	_, err := ParseTag(s, tag)
 	suite.NotNil(err)
 
 	tag = "bar="
-	_, err = gkgen.ParseTag(s, tag)
+	_, err = ParseTag(s, tag)
 	assert.Equal(suite.T(), io.EOF, err)
 }
 
 func (suite *TagParserTestSuite) TestParseTagLeadingEquals() {
 	s := new(EmptyStruct)
 	tag := "="
-	_, err := gkgen.ParseTag(s, tag)
+	_, err := ParseTag(s, tag)
 	suite.NotNil(err)
 }
 
 func (suite *TagParserTestSuite) TestParseTagWithMultipleParams() {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1)"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 1, len(vcs))
 	assert.Equal(suite.T(), "bar", vcs[0].Name())
@@ -139,7 +137,7 @@ func (suite *TagParserTestSuite) TestParseTagWithMultipleParams() {
 func (suite *TagParserTestSuite) TestParseTag2ValidationsWith1ParamEach() {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1),foo=(foo0)"
-	vcs, err := gkgen.ParseTag(s, tag)
+	vcs, err := ParseTag(s, tag)
 	assert.Nil(suite.T(), err)
 	assert.Equal(suite.T(), 2, len(vcs))
 

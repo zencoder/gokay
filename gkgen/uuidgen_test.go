@@ -1,4 +1,4 @@
-package gkgen_test
+package gkgen
 
 import (
 	"errors"
@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
 )
 
 // UUIDValidatorTestSuite
@@ -22,7 +21,7 @@ func TestUUIDValidatorTestSuite(t *testing.T) {
 
 // TestGenerateUUIDValidationCode_String
 func (s *UUIDValidatorTestSuite) TestGenerateUUIDValidationCode_String() {
-	v := gkgen.NewUUIDValidator()
+	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("UUIDString")
@@ -35,7 +34,7 @@ func (s *UUIDValidatorTestSuite) TestGenerateUUIDValidationCode_String() {
 
 // TestGenerateUUIDValidationCode_StringPtr
 func (s *UUIDValidatorTestSuite) TestGenerateUUIDValidationCode_StringPtr() {
-	v := gkgen.NewUUIDValidator()
+	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("UUIDStringPtr")
@@ -47,7 +46,7 @@ func (s *UUIDValidatorTestSuite) TestGenerateUUIDValidationCode_StringPtr() {
 
 // TestGenerateUUIDValidationCode_NonString
 func (s *UUIDValidatorTestSuite) TestGenerateUUIDValidationCode_NonString() {
-	v := gkgen.NewUUIDValidator()
+	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
 	et := reflect.TypeOf(e)
 

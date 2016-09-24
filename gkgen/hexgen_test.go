@@ -1,4 +1,4 @@
-package gkgen_test
+package gkgen
 
 import (
 	"reflect"
@@ -6,8 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
-	"github.com/zencoder/gokay/internal/gkexample"
 )
 
 // HexValidatorTestSuite
@@ -22,8 +20,8 @@ func TestHexValidatorTestSuite(t *testing.T) {
 
 // TestGenerateHexValidationCode_String
 func (s *HexValidatorTestSuite) TestGenerateHexValidationCode_String() {
-	hv := gkgen.NewHexValidator()
-	e := gkexample.ExampleStruct{}
+	hv := NewHexValidator()
+	e := ExampleStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("HexString")
 
@@ -35,8 +33,8 @@ func (s *HexValidatorTestSuite) TestGenerateHexValidationCode_String() {
 
 // TestGenerateHexValidationCode_StringPtr
 func (s *HexValidatorTestSuite) TestGenerateHexValidationCode_StringPtr() {
-	hv := gkgen.NewHexValidator()
-	e := gkexample.ExampleStruct{}
+	hv := NewHexValidator()
+	e := ExampleStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("HexStringPtr")
 	code, err := hv.Generate(et, field, []string{})

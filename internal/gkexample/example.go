@@ -46,6 +46,8 @@ type ExampleStruct struct {
 	BCP47StringPtr          *string `valid:"NotNil,BCP47"`
 	BCP47String             string  `valid:"BCP47"`
 	CanBeNilWithConstraints *string `valid:"Length=(12)"`
+	BCP47NonString          int
+	BCP47NonStringPtr       *int
 }
 
 // TestValidate

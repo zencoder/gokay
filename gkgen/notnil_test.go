@@ -1,4 +1,4 @@
-package gkgen_test
+package gkgen
 
 import (
 	"reflect"
@@ -6,8 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
-	"github.com/zencoder/gokay/internal/gkexample"
 )
 
 // NotNilTestSuite
@@ -25,8 +23,8 @@ func (s *NotNilTestSuite) SetupTest() {}
 
 // TestNotNil
 func (s *NotNilTestSuite) TestNotNil() {
-	nv := gkgen.NewNotNilValidator()
-	e := gkexample.ExampleStruct{}
+	nv := NewNotNilValidator()
+	e := ExampleStruct{}
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("HexStringPtr")
@@ -38,8 +36,8 @@ func (s *NotNilTestSuite) TestNotNil() {
 
 // TestNotNil_Map
 func (s *NotNilTestSuite) TestNotNil_Map() {
-	nv := gkgen.NewNotNilValidator()
-	e := gkexample.NotNilTestStruct{}
+	nv := NewNotNilValidator()
+	e := NotNilTestStruct{}
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("NotNilMap")
@@ -51,8 +49,8 @@ func (s *NotNilTestSuite) TestNotNil_Map() {
 
 // TestNotNil_Slice
 func (s *NotNilTestSuite) TestNotNil_Slice() {
-	nv := gkgen.NewNotNilValidator()
-	e := gkexample.NotNilTestStruct{}
+	nv := NewNotNilValidator()
+	e := NotNilTestStruct{}
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("NotNilSlice")
