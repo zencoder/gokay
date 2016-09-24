@@ -73,18 +73,6 @@ func (s *GeneratorTestSuite) TestGenerateMapValidationCodeNonArrayOrSlice() {
 	s.Require().Error(err)
 }
 
-// TestGenerateMapValidationCodeSuccess
-/*func (s *GeneratorTestSuite) TestGenerateMapValidationCodeSuccess() {
-	var nn NotNilTestStruct
-	nn.NotNilMap = make(map[string]interface{})
-	//et := reflect.TypeOf(NotNilTestStruct{})
-	et := reflect.TypeOf(nn.NotNilMap)
-	field, _ := et.FieldByName("NonNilMap")
-	out := &bytes.Buffer{}
-	err := generateMapValidationCode(out, field.Type, field.Name, int64(0))
-	s.Require().Error(err)
-}*/
-
 // TestGenerateSliceValidationCodeNonSlice
 func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeNonSlice() {
 	et := reflect.TypeOf(ExampleStruct{})
@@ -99,6 +87,6 @@ func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeSlice() {
 	et := reflect.TypeOf(NotNilTestStruct{})
 	field, _ := et.FieldByName("NotNilSlice")
 	out := &bytes.Buffer{}
-	err := generateSliceValidationCode(out, field.Type, "NotNilSlice", int64(1))
+	err := generateSliceValidationCode(out, field.Type, field.Name, int64(1))
 	s.Require().Error(err)
 }
