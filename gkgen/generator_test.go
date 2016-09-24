@@ -64,10 +64,41 @@ func (s *GeneratorTestSuite) TestGenerateWithUnknownTag() {
 	s.Equal(errors.New("Unknown validation generator name: 'Unknown'"), err)
 }
 
-// TestGenerateMapValidationCode
-func (s *GeneratorTestSuite) TestGenerateMapValidationCode() {
+// TestGenerateMapValidationCodeNonArrayOrSlice
+func (s *GeneratorTestSuite) TestGenerateMapValidationCodeNonArrayOrSlice() {
+	et := reflect.TypeOf(ExampleStruct{})
+	field, _ := et.FieldByName("BCP47NonString")
 	out := &bytes.Buffer{}
-	var fieldType reflect.Type
-	err := generateMapValidationCode(out, fieldType, "", int64(1))
+	err := generateMapValidationCode(out, field.Type, "BCP47NonString", int64(1))
+	s.Require().Error(err)
+}
+
+// TestGenerateMapValidationCodeSuccess
+/*func (s *GeneratorTestSuite) TestGenerateMapValidationCodeSuccess() {
+	var nn NotNilTestStruct
+	nn.NotNilMap = make(map[string]interface{})
+	//et := reflect.TypeOf(NotNilTestStruct{})
+	et := reflect.TypeOf(nn.NotNilMap)
+	field, _ := et.FieldByName("NonNilMap")
+	out := &bytes.Buffer{}
+	err := generateMapValidationCode(out, field.Type, field.Name, int64(0))
+	s.Require().Error(err)
+}*/
+
+// TestGenerateSliceValidationCodeNonSlice
+func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeNonSlice() {
+	et := reflect.TypeOf(ExampleStruct{})
+	field, _ := et.FieldByName("BCP47NonString")
+	out := &bytes.Buffer{}
+	err := generateSliceValidationCode(out, field.Type, "BCP47NonString", int64(1))
+	s.Require().Error(err)
+}
+
+// TestGenerateSliceValidationCodeNonSlice
+func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeSlice() {
+	et := reflect.TypeOf(NotNilTestStruct{})
+	field, _ := et.FieldByName("NotNilSlice")
+	out := &bytes.Buffer{}
+	err := generateSliceValidationCode(out, field.Type, "NotNilSlice", int64(1))
 	s.Require().Error(err)
 }
