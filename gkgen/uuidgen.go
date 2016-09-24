@@ -11,12 +11,12 @@ type UUIDValidator struct {
 	name string
 }
 
-// NewUUIDValidator
+// NewUUIDValidator holds the UUIDValidator state
 func NewUUIDValidator() *UUIDValidator {
 	return &UUIDValidator{name: "UUID"}
 }
 
-// Generate
+// Generate generates validation code
 func (s *UUIDValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("Hex takes no parameters")

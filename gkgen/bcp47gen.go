@@ -11,12 +11,12 @@ type BCP47Validator struct {
 	name string
 }
 
-// NewBCP47Validator
+// NewBCP47Validator holds the BCP47Validator state
 func NewBCP47Validator() *BCP47Validator {
 	return &BCP47Validator{name: "BCP47"}
 }
 
-// GenerateValidationCode
+// Generate generates validation code
 func (s *BCP47Validator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("BCP47 takes no parameters")

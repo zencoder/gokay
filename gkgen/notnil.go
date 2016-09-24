@@ -13,12 +13,12 @@ type NotNilValidator struct {
 	name string
 }
 
-// NewNotNilValidator
+// NewNotNilValidator holds the NotNilValidator state
 func NewNotNilValidator() *NotNilValidator {
 	return &NotNilValidator{name: "NotNil"}
 }
 
-// GenerateValidationCode
+// Generate generates validation code
 func (s *NotNilValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("NotNil takes no parameters")

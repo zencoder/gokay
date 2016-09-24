@@ -12,12 +12,12 @@ type HexValidator struct {
 	name string
 }
 
-// NewHexValidator
+// NewHexValidator holds the HexValidator state
 func NewHexValidator() *HexValidator {
 	return &HexValidator{name: "Hex"}
 }
 
-// Generate
+// Generate generates validation code
 func (s *HexValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("Hex takes no parameters")

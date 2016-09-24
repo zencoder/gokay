@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// IsHex validates that the given string is a hex value
 func IsHex(s *string) error {
 	if s == nil {
 		return nil

@@ -14,12 +14,12 @@ type LengthValidateGen struct {
 	name string
 }
 
-// NewLengthValidator
+// NewLengthValidator holds LengthValidator state
 func NewLengthValidator() *LengthValidateGen {
 	return &LengthValidateGen{name: "Length"}
 }
 
-// GenerateValidationCode
+// Generate generates validation code
 func (s *LengthValidateGen) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 1 {
 		return "", errors.New("Length validation requires exactly 1 parameter")

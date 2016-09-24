@@ -17,9 +17,10 @@ import (
 	"github.com/pborman/uuid"
 )
 
+// usage is a string used to provide a user with the application usage
 const usage = `usage: gokay <file> [generator-package generator-contructor]
-	generator-package
-	generator-contructor
+	generator-package        custom package
+	generator-contructor     custom generator
 
 examples:
 	gokay file.go
@@ -110,6 +111,7 @@ func main() {
 
 	tempOut.Close()
 
+	// run goimports on the file
 	tmpimportsCmd := exec.Command("goimports", "-w", tempOut.Name())
 	tmpimportsCmd.Stdout = os.Stdout
 	tmpimportsCmd.Stderr = os.Stderr
@@ -124,6 +126,7 @@ func main() {
 		log.Fatalf("Failed executing intermediate executable to generate gokay validators failed: %v\n", err.Error())
 	}
 
+	// run goimports on the file path
 	importsCmd := exec.Command("goimports", "-w", outFilePath)
 	importsCmd.Stdout = os.Stdout
 	importsCmd.Stderr = os.Stderr
@@ -131,6 +134,7 @@ func main() {
 		log.Fatalf("Failed running imports on gokay validators: %v\n", err.Error())
 	}
 
+	// remove the temp directory
 	if err := os.RemoveAll(tempDir); err != nil {
 		log.Printf("Warning: Deleting intermediate temp files %v failed (although gokay run appears to have succeeded): %v\n", tempDir, err.Error())
 	}

@@ -7,15 +7,17 @@ import (
 	"strings"
 )
 
+// errValidTagSyntax is returned when an error is found in
+// the tag syntax
 var errValidTagSyntax = errors.New("error in 'valid' tag syntax")
 
-// ValidationCommand
+// ValidationCommand holds the ValidationCommand state
 type ValidationCommand struct {
 	name   string
 	Params []string
 }
 
-// NewValidationCommand
+// NewValidationCommand creates a new value of type ValidationCommand
 func NewValidationCommand(n string) ValidationCommand {
 	return ValidationCommand{name: n}
 }
@@ -25,7 +27,7 @@ func (s *ValidationCommand) Name() string {
 	return s.name
 }
 
-// ParseTag
+// ParseTag parses given struct tags
 func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 	inr := strings.NewReader(tag)
 	out := new(bytes.Buffer)
@@ -80,7 +82,7 @@ func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 	return nil, readerErr
 }
 
-// parseParams
+// parseParams parses the given parameters
 func parseParams(interf interface{}, inr *strings.Reader) ([]string, error) {
 	ch, _, readerErr := inr.ReadRune()
 	params := make([]string, 0, 8)
@@ -113,7 +115,7 @@ func parseParams(interf interface{}, inr *strings.Reader) ([]string, error) {
 	return params, nil
 }
 
-// parseParam
+// parseParam parses the given reader
 func parseParam(inr *strings.Reader) (string, error) {
 	ch, _, readerErr := inr.ReadRune()
 	out := new(bytes.Buffer)

@@ -15,7 +15,7 @@ type Generater interface {
 	Name() string
 }
 
-// ValidateGenerator
+// ValidateGenerator holds a map of identifiers and Generater's
 type ValidateGenerator struct {
 	Generators map[string]Generater
 }
@@ -46,15 +46,15 @@ func (s *ValidateGenerator) AddValidation(g Generater) error {
 // Generate generates Validate method for a structure
 // Implicitly generates code that validates Structs, Slices and Maps which can be nested. Null pointer fields are considered valid by default
 // Return value of generated function is an ErrorMap of ErrorArrays, where each element of an ErrorArray represents a failed validation
-func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
-	structValue := reflect.ValueOf(interf)
-	structType := reflect.TypeOf(interf)
+func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
+	structValue := reflect.ValueOf(i)
+	structType := reflect.TypeOf(i)
 
 	hasValidation := false
 	svBuf := &bytes.Buffer{}
 
 	fmt.Fprintf(svBuf, "func(s %s) Validate() error {\n", structType.Name())
-	fmt.Fprintln(svBuf, "\tem := make(gokay.ErrorMap)\n")
+	fmt.Fprint(svBuf, "\tem := make(gokay.ErrorMap)\n\n")
 
 	// Loop through fields
 	for j := 0; j < structValue.NumField(); j++ {
@@ -72,7 +72,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
 		if tag != "" && tag != "-" {
 			field := structType.Field(j)
 
-			vcs, err := ParseTag(interf, tag)
+			vcs, err := ParseTag(i, tag)
 			if err != nil {
 				return fmt.Errorf("Unable to parse tag: '%v'. Error: '%v'", tag, err)
 			}
@@ -178,6 +178,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
 	return nil
 }
 
+// generateMapValidationCode generates validation code used with maps
 func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName string, depth int64) error {
 	if fieldType.Kind() != reflect.Map {
 		return fmt.Errorf("Cannot call `generateMapValidationCode` on non-map type '%v'", fieldType)
@@ -265,7 +266,7 @@ func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName 
 	return nil
 }
 
-// generateSliceValidationCode
+// generateSliceValidationCode generates validation code used with slice
 func generateSliceValidationCode(out io.Writer, fieldType reflect.Type, fieldName string, depth int64) error {
 	if fieldType.Kind() != reflect.Slice {
 		return fmt.Errorf("`generateSliceValidationCode` only supports slices and arrays. Not: '%s'", fieldType.Kind())
