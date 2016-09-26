@@ -7,6 +7,7 @@ import (
 )
 
 // BCP47Validator generates code that will verify if a field is a BCP47 compatible string
+// https://tools.ietf.org/html/bcp47
 type BCP47Validator struct {
 	name string
 }
