@@ -10,14 +10,16 @@ import (
 // Slice and Array support coming later.
 // It will flag nil string pointers as valid, use in conjunction with NotNil validator if you don't want nil values
 type NotNilValidator struct {
-	Name string
+	name string
 }
 
+// NewNotNilValidator holds the NotNilValidator state
 func NewNotNilValidator() *NotNilValidator {
-	return &NotNilValidator{Name: "NotNil"}
+	return &NotNilValidator{name: "NotNil"}
 }
 
-func (s *NotNilValidator) GenerateValidationCode(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+// Generate generates validation code
+func (s *NotNilValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("NotNil takes no parameters")
 	}
@@ -36,6 +38,7 @@ func (s *NotNilValidator) GenerateValidationCode(sType reflect.Type, fieldStruct
 	}
 }
 
-func (s *NotNilValidator) GetName() string {
-	return s.Name
+// Name provides access to the name field
+func (s *NotNilValidator) Name() string {
+	return s.name
 }

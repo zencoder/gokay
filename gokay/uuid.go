@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// IsUUID validates that the given string is a UUID value
 func IsUUID(s *string) error {
 	if s == nil {
 		return nil

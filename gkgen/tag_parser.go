@@ -7,11 +7,27 @@ import (
 	"strings"
 )
 
+// errValidTagSyntax is returned when an error is found in
+// the tag syntax
+var errValidTagSyntax = errors.New("error in 'valid' tag syntax")
+
+// ValidationCommand holds the ValidationCommand state
 type ValidationCommand struct {
-	Name   string
+	name   string
 	Params []string
 }
 
+// NewValidationCommand creates a new value of type ValidationCommand
+func NewValidationCommand(n string) ValidationCommand {
+	return ValidationCommand{name: n}
+}
+
+// Name provides access to the name field
+func (s *ValidationCommand) Name() string {
+	return s.name
+}
+
+// ParseTag parses given struct tags
 func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 	inr := strings.NewReader(tag)
 	out := new(bytes.Buffer)
@@ -23,7 +39,7 @@ func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 		switch ch {
 		case '=':
 			if len(out.Bytes()) == 0 {
-				return nil, errors.New("Error in 'valid' tag syntax")
+				return nil, errValidTagSyntax
 			}
 			name = out.String()
 			out.Reset()
@@ -32,16 +48,18 @@ func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 				return nil, err
 			}
 			vc := ValidationCommand{
-				Name:   name,
-				Params: params}
+				name:   name,
+				Params: params,
+			}
 			vcs = append(vcs, vc)
 		case ',':
 			if len(out.Bytes()) == 0 {
-				return nil, errors.New("Error in 'valid' tag syntax")
+				return nil, errValidTagSyntax
 			}
 			name = out.String()
 			vc := ValidationCommand{
-				Name: name}
+				name: name,
+			}
 			vcs = append(vcs, vc)
 			out.Reset()
 		default:
@@ -52,18 +70,19 @@ func ParseTag(interf interface{}, tag string) ([]ValidationCommand, error) {
 		if readerErr == io.EOF && len(out.Bytes()) > 0 {
 			name = out.String()
 			vc := ValidationCommand{
-				Name: name}
+				name: name,
+			}
 			vcs = append(vcs, vc)
 		}
 	}
 
 	if readerErr == io.EOF {
 		return vcs, nil
-	} else {
-		return nil, readerErr
 	}
+	return nil, readerErr
 }
 
+// parseParams parses the given parameters
 func parseParams(interf interface{}, inr *strings.Reader) ([]string, error) {
 	ch, _, readerErr := inr.ReadRune()
 	params := make([]string, 0, 8)
@@ -83,12 +102,12 @@ func parseParams(interf interface{}, inr *strings.Reader) ([]string, error) {
 
 		case ',':
 			if len(params) == 0 {
-				return nil, errors.New("Error in 'valid' tag syntax")
+				return nil, errValidTagSyntax
 			}
 			return params, nil
 		default:
 			if len(params) == 0 {
-				return nil, errors.New("Error in 'valid' tag syntax")
+				return nil, errValidTagSyntax
 			}
 			ch, _, readerErr = inr.ReadRune()
 		}
@@ -96,6 +115,7 @@ func parseParams(interf interface{}, inr *strings.Reader) ([]string, error) {
 	return params, nil
 }
 
+// parseParam parses the given reader
 func parseParam(inr *strings.Reader) (string, error) {
 	ch, _, readerErr := inr.ReadRune()
 	out := new(bytes.Buffer)
@@ -122,8 +142,7 @@ func parseParam(inr *strings.Reader) (string, error) {
 
 	// Reader should reach ')' before EOF
 	if readerErr == io.EOF {
-		return "", errors.New("Error in 'valid' tag syntax")
-	} else {
-		return "", readerErr
+		return "", errValidTagSyntax
 	}
+	return "", readerErr
 }

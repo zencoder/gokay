@@ -9,17 +9,24 @@ import (
 	"reflect"
 )
 
-type ValidateGenerator struct {
-	Validaters map[string]Validater
+// Generater defines the behavior of types that generate validation code
+type Generater interface {
+	Generate(reflect.Type, reflect.StructField, []string) (string, error)
+	Name() string
 }
 
-// Default validators:
+// ValidateGenerator holds a map of identifiers and Generater's
+type ValidateGenerator struct {
+	Generators map[string]Generater
+}
+
+// NewValidateGenerator creates a new pointer value of type ValidateGernerator
 // - Hex: checks if a string is a valid hexadecimal format number
 // - Length: takes 1 integer argument and compares the length of a string field against that
 // - NotNil: Validate fails if field is nil
 // - UUID: Checks and fails if a string is not a valid UUID
-func NewValidator() *ValidateGenerator {
-	v := &ValidateGenerator{make(map[string]Validater)}
+func NewValidateGenerator() *ValidateGenerator {
+	v := &ValidateGenerator{make(map[string]Generater)}
 	v.AddValidation(NewNotNilValidator())
 	v.AddValidation(NewLengthValidator())
 	v.AddValidation(NewHexValidator())
@@ -28,25 +35,26 @@ func NewValidator() *ValidateGenerator {
 	return v
 }
 
-// Adds a Validation to a ValidateGenerator, that Validation can be applied to a struct field using the string returned by
-// validater.GetName()
-func (s *ValidateGenerator) AddValidation(validater Validater) error {
-	s.Validaters[validater.GetName()] = validater
+// AddValidation adds a Validation to a ValidateGenerator, that Validation can be applied to a struct
+// field using the string returned by
+// validater.Name()
+func (s *ValidateGenerator) AddValidation(g Generater) error {
+	s.Generators[g.Name()] = g
 	return nil
 }
 
-// Generates Validate method for a structure
+// Generate generates Validate method for a structure
 // Implicitly generates code that validates Structs, Slices and Maps which can be nested. Null pointer fields are considered valid by default
 // Return value of generated function is an ErrorMap of ErrorArrays, where each element of an ErrorArray represents a failed validation
-func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
-	structValue := reflect.ValueOf(interf)
-	structType := reflect.TypeOf(interf)
+func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
+	structValue := reflect.ValueOf(i)
+	structType := reflect.TypeOf(i)
 
 	hasValidation := false
 	svBuf := &bytes.Buffer{}
 
 	fmt.Fprintf(svBuf, "func(s %s) Validate() error {\n", structType.Name())
-	fmt.Fprintln(svBuf, "\tem := make(gokay.ErrorMap)\n")
+	fmt.Fprint(svBuf, "\tem := make(gokay.ErrorMap)\n\n")
 
 	// Loop through fields
 	for j := 0; j < structValue.NumField(); j++ {
@@ -64,16 +72,16 @@ func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
 		if tag != "" && tag != "-" {
 			field := structType.Field(j)
 
-			vcs, err := ParseTag(interf, tag)
+			vcs, err := ParseTag(i, tag)
 			if err != nil {
 				return fmt.Errorf("Unable to parse tag: '%v'. Error: '%v'", tag, err)
 			}
 			for _, vc := range vcs {
-				if _, ok := s.Validaters[vc.Name]; !ok {
-					return fmt.Errorf("Unknown validation generator name: '%s'", vc.Name)
+				if _, ok := s.Generators[vc.name]; !ok {
+					return fmt.Errorf("Unknown validation generator name: '%s'", vc.name)
 				}
-				code, err := s.Validaters[vc.Name].GenerateValidationCode(structType, field, vc.Params)
-				fmt.Fprintf(fvBuf, "// %s", vc.Name)
+				code, err := s.Generators[vc.name].Generate(structType, field, vc.Params)
+				fmt.Fprintf(fvBuf, "// %s", vc.name)
 				fmt.Fprintln(fvBuf, code)
 				if err != nil {
 					return err
@@ -170,6 +178,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, interf interface{}) error {
 	return nil
 }
 
+// generateMapValidationCode generates validation code used with maps
 func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName string, depth int64) error {
 	if fieldType.Kind() != reflect.Map {
 		return fmt.Errorf("Cannot call `generateMapValidationCode` on non-map type '%v'", fieldType)
@@ -195,8 +204,9 @@ func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName 
 	}
 
 	if fieldType.Kind() == reflect.Ptr {
-		return fmt.Errorf("Recursive validation of nested pointers not yet supported. Field '%s' at depth '%s'", fieldName, depth)
+		return fmt.Errorf("Recursive validation of nested pointers not yet supported. Field '%s' at depth '%d'", fieldName, depth)
 	}
+
 	switch fieldType.Kind() {
 	case reflect.Map:
 		fmt.Fprintf(out, "emv%d := make(gokay.ErrorMap)\n", depth)
@@ -256,6 +266,7 @@ func generateMapValidationCode(out io.Writer, fieldType reflect.Type, fieldName 
 	return nil
 }
 
+// generateSliceValidationCode generates validation code used with slice
 func generateSliceValidationCode(out io.Writer, fieldType reflect.Type, fieldName string, depth int64) error {
 	if fieldType.Kind() != reflect.Slice {
 		return fmt.Errorf("`generateSliceValidationCode` only supports slices and arrays. Not: '%s'", fieldType.Kind())

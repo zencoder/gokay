@@ -20,12 +20,19 @@ func (s *UUIDTestSuite) TestIsUUID_No0x() {
 	s.Nil(IsUUID(&str))
 }
 
-func (s *UUIDTestSuite) TestIsUUID_NotUUID() {
+// TestNilUUID tests to see if the string passed in is nil
+func (s *UUIDTestSuite) TestNilUUID() {
+	var str *string
+	s.Require().Nil(IsUUID(str))
+}
+
+// TestIsUUID_NotMatch
+func (s *UUIDTestSuite) TestIsUUID_NotMatch() {
 	str := "603c9a2a-38db-4987-932a-2f57733a29fQ"
-	s.Equal(errors.New("'603c9a2a-38db-4987-932a-2f57733a29fQ' is not a UUID"), IsUUID(&str))
+	s.Require().Equal(errors.New("'603c9a2a-38db-4987-932a-2f57733a29fQ' is not a UUID"), IsUUID(&str))
 }
 
 func (s *UUIDTestSuite) TestIsUUID_NotUUIDTooLong() {
 	str := "AB603c9a2a-38db-4987-932a-2f57733a29fQ"
-	s.Equal(errors.New("'AB603c9a2a-38db-4987-932a-2f57733a29fQ' is not a UUID"), IsUUID(&str))
+	s.Require().Equal(errors.New("'AB603c9a2a-38db-4987-932a-2f57733a29fQ' is not a UUID"), IsUUID(&str))
 }

@@ -6,6 +6,9 @@ gokay parses a struct and generates a `Validate` method so that the struct imple
 
 gokay generated Validate methods will return an ErrorMap that implements the Error interface.  The ErrorMap is a `map[string]error` containing failed validations for each invalid field in a struct.
 
+### Code Documentation
+`godoc -http=:6060`
+
 ## Installing gokay
 
 This project uses [Glide](https://github.com/Masterminds/glide) to manage it's dependencies.  Please refer to the glide docs to see how to install and use glide.
@@ -24,7 +27,7 @@ go install ./...
 ## Running gokay
 ### Usage
 ```	sh
-gokay <file_name> [(custom-generator-package) (custom-generator-contructor)]
+gokay <file> [custom-generator-package custom-generator-contructor]
 ```
 
 ### Examples
@@ -97,15 +100,16 @@ gokay was built to allow developers to write and attach their own Validations to
 	}
     ```
 
-1. Write a struct that implements the `Validater` interface
+1. Write a struct that implements the `Generater` interface
 
     ```go
-    type Validater interface {
-		GenerateValidationCode(reflect.Type, reflect.StructField, []string) (string, error)
-		GetName() string
+	// Generater defines the behavior of types that generate validation code
+    type Generater interface {
+		Generate(reflect.Type, reflect.StructField, []string) (string, error)
+		Name() string
 	}
 	```
-   - GetName returns the string that will be used as a validation tag
+   - Name returns the string that will be used as a validation tag
 
 1. GenerateValidationCode should generate a block will leverage the function defined in step 1.  This block will be inserted into the generated `Validate` function. GenerateValidationCode output example:
     
@@ -123,7 +127,7 @@ gokay was built to allow developers to write and attach their own Validations to
 	
 	// To run: `gokay gkexample NewCustomValidator`
 	func NewCustomGKGenerator() *gkgen.ValidateGenerator {
-		v := gkgen.NewValidator()
+		v := gkgen.NewValidateGenerator()
 		v.AddValidation(NewCustomValidator())
 		return v
 	}

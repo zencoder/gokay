@@ -28,3 +28,5 @@ clean:
 	go clean
 	rm -f bin/gokay
 	rm -rf coverage/
+
+phony: clean tc build

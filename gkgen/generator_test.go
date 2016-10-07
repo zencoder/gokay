@@ -1,59 +1,92 @@
-package gkgen_test
+package gkgen
 
 import (
 	"bytes"
 	"errors"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
-	"github.com/zencoder/gokay/gkgen"
-	"github.com/zencoder/gokay/internal/gkexample"
 )
 
-type ValidatorTestSuite struct {
+// GeneratorTestSuite
+type GeneratorTestSuite struct {
 	suite.Suite
 }
 
-func TestValidatorSuite(t *testing.T) {
-	suite.Run(t, new(ValidatorTestSuite))
+// TestGeneratorTestSuite
+func TestGeneratorTestSuite(t *testing.T) {
+	suite.Run(t, new(GeneratorTestSuite))
 }
 
-func (s *ValidatorTestSuite) SetupTest() {
-}
+// SetupTest
+func (s *GeneratorTestSuite) SetupTest() {}
 
-func (s *ValidatorTestSuite) TestAddValidation() {
-	v := gkgen.ValidateGenerator{make(map[string]gkgen.Validater)}
-	validator := gkgen.NewNotNilValidator()
+// TestAddValidation
+func (s *GeneratorTestSuite) TestAddValidation() {
+	v := ValidateGenerator{
+		Generators: make(map[string]Generater),
+	}
+	generator := NewNotNilValidator()
 
-	_, ok := v.Validaters[validator.GetName()]
+	_, ok := v.Generators[generator.Name()]
 	s.False(ok)
 
-	v.AddValidation(validator)
-	_, ok = v.Validaters[validator.GetName()]
+	v.AddValidation(generator)
+	_, ok = v.Generators[generator.Name()]
 	s.True(ok)
 }
 
-// Test single no-param validation
-func (s *ValidatorTestSuite) TestExampleStruct() {
+// TestExampleStruct tests single no-param validation
+func (s *GeneratorTestSuite) TestExampleStruct() {
 	out := &bytes.Buffer{}
 	key := "abc123"
-	e := gkexample.ExampleStruct{
+	e := ExampleStruct{
 		HexStringPtr: &key,
 	}
 
-	v := gkgen.NewValidator()
+	v := NewValidateGenerator()
 
 	err := v.Generate(out, e)
 	s.Nil(err)
 }
 
+// UnknownTagStruct
 type UnknownTagStruct struct {
 	Field string `valid:"Length=(5),Unknown"`
 }
 
-func (s *ValidatorTestSuite) TestGenerateWithUnknownTag() {
+// TestGenerateWithUnknownTag
+func (s *GeneratorTestSuite) TestGenerateWithUnknownTag() {
 	out := &bytes.Buffer{}
-	v := gkgen.NewValidator()
+	v := NewValidateGenerator()
 	err := v.Generate(out, UnknownTagStruct{})
 	s.Equal(errors.New("Unknown validation generator name: 'Unknown'"), err)
+}
+
+// TestGenerateMapValidationCodeNonArrayOrSlice
+func (s *GeneratorTestSuite) TestGenerateMapValidationCodeNonArrayOrSlice() {
+	et := reflect.TypeOf(ExampleStruct{})
+	field, _ := et.FieldByName("BCP47NonString")
+	out := &bytes.Buffer{}
+	err := generateMapValidationCode(out, field.Type, "BCP47NonString", int64(1))
+	s.Require().Error(err)
+}
+
+// TestGenerateSliceValidationCodeNonSlice
+func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeNonSlice() {
+	et := reflect.TypeOf(ExampleStruct{})
+	field, _ := et.FieldByName("BCP47NonString")
+	out := &bytes.Buffer{}
+	err := generateSliceValidationCode(out, field.Type, "BCP47NonString", int64(1))
+	s.Require().Error(err)
+}
+
+// TestGenerateSliceValidationCodeNonSlice
+func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeSlice() {
+	et := reflect.TypeOf(NotNilTestStruct{})
+	field, _ := et.FieldByName("NotNilSlice")
+	out := &bytes.Buffer{}
+	err := generateSliceValidationCode(out, field.Type, field.Name, int64(1))
+	s.Require().Error(err)
 }

@@ -12,7 +12,7 @@ func (s Example) Validate() error {
 	em := make(gokay.ErrorMap)
 
 	// BEGIN MapOfInterfaces field Validations
-	errorsMapOfInterfaces := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfInterfaces := make(gokay.ErrorSlice, 0, 0)
 	// NotNil
 	if s.MapOfInterfaces == nil {
 		errorsMapOfInterfaces = append(errorsMapOfInterfaces, errors.New("is Nil"))
@@ -44,7 +44,7 @@ func (s ExampleStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
 	// BEGIN HexStringPtr field Validations
-	errorsHexStringPtr := make(gokay.ErrorArray, 0, 0)
+	errorsHexStringPtr := make(gokay.ErrorSlice, 0, 0)
 	// Length
 	if err := gokay.LengthString(16, s.HexStringPtr); err != nil {
 		errorsHexStringPtr = append(errorsHexStringPtr, err)
@@ -65,7 +65,7 @@ func (s ExampleStruct) Validate() error {
 	// END HexStringPtr field Validations
 
 	// BEGIN HexString field Validations
-	errorsHexString := make(gokay.ErrorArray, 0, 0)
+	errorsHexString := make(gokay.ErrorSlice, 0, 0)
 	// Length
 	if err := gokay.LengthString(12, &s.HexString); err != nil {
 		errorsHexString = append(errorsHexString, err)
@@ -82,7 +82,7 @@ func (s ExampleStruct) Validate() error {
 	// END HexString field Validations
 
 	// BEGIN BCP47StringPtr field Validations
-	errorsBCP47StringPtr := make(gokay.ErrorArray, 0, 0)
+	errorsBCP47StringPtr := make(gokay.ErrorSlice, 0, 0)
 	// NotNil
 	if s.BCP47StringPtr == nil {
 		errorsBCP47StringPtr = append(errorsBCP47StringPtr, errors.New("is Nil"))
@@ -98,7 +98,7 @@ func (s ExampleStruct) Validate() error {
 	// END BCP47StringPtr field Validations
 
 	// BEGIN BCP47String field Validations
-	errorsBCP47String := make(gokay.ErrorArray, 0, 0)
+	errorsBCP47String := make(gokay.ErrorSlice, 0, 0)
 	// BCP47
 	if err := gokay.IsBCP47(&s.BCP47String); err != nil {
 		errorsBCP47String = append(errorsBCP47String, err)
@@ -110,7 +110,7 @@ func (s ExampleStruct) Validate() error {
 	// END BCP47String field Validations
 
 	// BEGIN CanBeNilWithConstraints field Validations
-	errorsCanBeNilWithConstraints := make(gokay.ErrorArray, 0, 0)
+	errorsCanBeNilWithConstraints := make(gokay.ErrorSlice, 0, 0)
 	// Length
 	if err := gokay.LengthString(12, s.CanBeNilWithConstraints); err != nil {
 		errorsCanBeNilWithConstraints = append(errorsCanBeNilWithConstraints, err)
@@ -128,11 +128,13 @@ func (s ExampleStruct) Validate() error {
 	}
 
 }
+
+// Validate
 func (s HasValidateImplicit) Validate() error {
 	em := make(gokay.ErrorMap)
 
 	// BEGIN InvalidStruct field Validations
-	errorsInvalidStruct := make(gokay.ErrorArray, 0, 0)
+	errorsInvalidStruct := make(gokay.ErrorSlice, 0, 0)
 
 	if s.InvalidStruct != nil {
 		if err := gokay.Validate(s.InvalidStruct); err != nil {
@@ -146,7 +148,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END InvalidStruct field Validations
 
 	// BEGIN ValidStruct field Validations
-	errorsValidStruct := make(gokay.ErrorArray, 0, 0)
+	errorsValidStruct := make(gokay.ErrorSlice, 0, 0)
 	if err := gokay.Validate(s.ValidStruct); err != nil {
 		errorsValidStruct = append(errorsValidStruct, err)
 	}
@@ -157,7 +159,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END ValidStruct field Validations
 
 	// BEGIN MapOfStruct field Validations
-	errorsMapOfStruct := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfStruct := make(gokay.ErrorSlice, 0, 0)
 	emMapOfStruct := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapOfStruct {
 		if err := gokay.Validate(v0); err != nil {
@@ -175,7 +177,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END MapOfStruct field Validations
 
 	// BEGIN MapOfStructPtrs field Validations
-	errorsMapOfStructPtrs := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfStructPtrs := make(gokay.ErrorSlice, 0, 0)
 	emMapOfStructPtrs := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapOfStructPtrs {
 		if v0 != nil {
@@ -195,7 +197,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END MapOfStructPtrs field Validations
 
 	// BEGIN MapOfMaps field Validations
-	errorsMapOfMaps := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfMaps := make(gokay.ErrorSlice, 0, 0)
 	emMapOfMaps := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapOfMaps {
 		emv0 := make(gokay.ErrorMap)
@@ -222,7 +224,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END MapOfMaps field Validations
 
 	// BEGIN MapMapsOfSlices field Validations
-	errorsMapMapsOfSlices := make(gokay.ErrorArray, 0, 0)
+	errorsMapMapsOfSlices := make(gokay.ErrorSlice, 0, 0)
 	emMapMapsOfSlices := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapMapsOfSlices {
 		emv0 := make(gokay.ErrorMap)
@@ -256,7 +258,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END MapMapsOfSlices field Validations
 
 	// BEGIN MapOfInterfaces field Validations
-	errorsMapOfInterfaces := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfInterfaces := make(gokay.ErrorSlice, 0, 0)
 	emMapOfInterfaces := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapOfInterfaces {
 		if err := gokay.Validate(v0); err != nil {
@@ -274,7 +276,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END MapOfInterfaces field Validations
 
 	// BEGIN SimpleSlice field Validations
-	errorsSimpleSlice := make(gokay.ErrorArray, 0, 0)
+	errorsSimpleSlice := make(gokay.ErrorSlice, 0, 0)
 	emSimpleSlice := make(gokay.ErrorMap)
 	for k0, v0 := range s.SimpleSlice {
 		if v0 != nil {
@@ -294,7 +296,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END SimpleSlice field Validations
 
 	// BEGIN SliceOfSlicesOfSlices field Validations
-	errorsSliceOfSlicesOfSlices := make(gokay.ErrorArray, 0, 0)
+	errorsSliceOfSlicesOfSlices := make(gokay.ErrorSlice, 0, 0)
 	emSliceOfSlicesOfSlices := make(gokay.ErrorMap)
 	for k0, v0 := range s.SliceOfSlicesOfSlices {
 		emv0 := make(gokay.ErrorMap)
@@ -328,7 +330,7 @@ func (s HasValidateImplicit) Validate() error {
 	// END SliceOfSlicesOfSlices field Validations
 
 	// BEGIN MapOfSlicesOfMaps field Validations
-	errorsMapOfSlicesOfMaps := make(gokay.ErrorArray, 0, 0)
+	errorsMapOfSlicesOfMaps := make(gokay.ErrorSlice, 0, 0)
 	emMapOfSlicesOfMaps := make(gokay.ErrorMap)
 	for k0, v0 := range s.MapOfSlicesOfMaps {
 		emv0 := make(gokay.ErrorMap)
@@ -368,11 +370,13 @@ func (s HasValidateImplicit) Validate() error {
 	}
 
 }
+
+// Validate
 func (s NotNilTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
 	// BEGIN NotNilMap field Validations
-	errorsNotNilMap := make(gokay.ErrorArray, 0, 0)
+	errorsNotNilMap := make(gokay.ErrorSlice, 0, 0)
 	// NotNil
 	if s.NotNilMap == nil {
 		errorsNotNilMap = append(errorsNotNilMap, errors.New("is Nil"))
@@ -394,7 +398,7 @@ func (s NotNilTestStruct) Validate() error {
 	// END NotNilMap field Validations
 
 	// BEGIN NotNilSlice field Validations
-	errorsNotNilSlice := make(gokay.ErrorArray, 0, 0)
+	errorsNotNilSlice := make(gokay.ErrorSlice, 0, 0)
 	// NotNil
 	if s.NotNilSlice == nil {
 		errorsNotNilSlice = append(errorsNotNilSlice, errors.New("is Nil"))
@@ -407,8 +411,6 @@ func (s NotNilTestStruct) Validate() error {
 
 	if len(em) > 0 {
 		return em
-	} else {
-		return nil
 	}
-
+	return nil
 }
