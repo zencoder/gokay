@@ -49,11 +49,13 @@ func main() {
 
 	tempName := uuid.NewRandom().String()
 
-	tempDir := fmt.Sprintf("%s/%s", fileDir, tempName)
-	if err := os.Mkdir(tempDir, os.ModePerm); err != nil {
-		log.Fatalf("Error creating directory %v: %v\n", tempDir, err)
-	}
+	tempDir := fmt.Sprintf("%s/tmp/%s", fileDir, tempName)
 	tempFile := fmt.Sprintf("%s/%s.go", tempDir, tempName)
+
+	// os.Mkdir errors when the dir already exists, which is fine.
+	// Real errors will still be detected when we try use the actual tmpfile.
+	_ = os.Mkdir(fileDir+"/tmp", os.ModePerm)
+	_ = os.Mkdir(tempDir, os.ModePerm)
 
 	outFilePath := fmt.Sprintf("%s_validators.go", strings.TrimSuffix(fileName, filepath.Ext(fileName)))
 	tempOut, err := os.Create(tempFile)
@@ -108,8 +110,6 @@ func main() {
 	}
 
 	fmt.Fprintf(outWriter, "}\n")
-
-	tempOut.Close()
 
 	// run goimports on the file
 	tmpimportsCmd := exec.Command("goimports", "-w", tempOut.Name())
