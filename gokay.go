@@ -54,8 +54,8 @@ func main() {
 
 	// os.Mkdir errors when the dir already exists, which is fine.
 	// Real errors will still be detected when we try use the actual tmpfile.
-	_ = os.Mkdir(fileDir+"/tmp", os.ModePerm)
-	_ = os.Mkdir(tempDir, os.ModePerm)
+	os.Mkdir(fileDir+"/tmp", os.ModePerm)
+	os.Mkdir(tempDir, os.ModePerm)
 
 	outFilePath := fmt.Sprintf("%s_validators.go", strings.TrimSuffix(fileName, filepath.Ext(fileName)))
 	tempOut, err := os.Create(tempFile)
