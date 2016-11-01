@@ -98,6 +98,9 @@ func main() {
 	sort.Strings(sortedObjectKeys)
 
 	for _, k := range sortedObjectKeys {
+		if k == "" {
+			continue
+		}
 		d := f.Scope.Objects[k]
 		ts, ok := d.Decl.(*ast.TypeSpec)
 		if !ok {
