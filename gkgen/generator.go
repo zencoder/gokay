@@ -45,7 +45,7 @@ func (s *ValidateGenerator) AddValidation(g Generater) error {
 
 // Generate generates Validate method for a structure
 // Implicitly generates code that validates Structs, Slices and Maps which can be nested. Null pointer fields are considered valid by default
-// Return value of generated function is an ErrorMap of ErrorArrays, where each element of an ErrorArray represents a failed validation
+// Return value of generated function is an ErrorMap of ErrorSlices, where each element of an ErrorSlice represents a failed validation
 func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 	structValue := reflect.ValueOf(i)
 	structType := reflect.TypeOf(i)
@@ -67,7 +67,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 
 		fmt.Fprintf(fvBuf, `
 	// BEGIN %[1]s field Validations
-	errors%[1]s := make(gokay.ErrorArray, 0, 0)
+	errors%[1]s := make(gokay.ErrorSlice, 0, 0)
 	`, field.Name)
 		if tag != "" && tag != "-" {
 			field := structType.Field(j)
