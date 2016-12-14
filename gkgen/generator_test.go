@@ -6,39 +6,26 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/require"
 )
 
-// GeneratorTestSuite
-type GeneratorTestSuite struct {
-	suite.Suite
-}
-
-// TestGeneratorTestSuite
-func TestGeneratorTestSuite(t *testing.T) {
-	suite.Run(t, new(GeneratorTestSuite))
-}
-
-// SetupTest
-func (s *GeneratorTestSuite) SetupTest() {}
-
 // TestAddValidation
-func (s *GeneratorTestSuite) TestAddValidation() {
+func TestAddValidation(t *testing.T) {
 	v := ValidateGenerator{
 		Generators: make(map[string]Generater),
 	}
 	generator := NewNotNilValidator()
 
 	_, ok := v.Generators[generator.Name()]
-	s.False(ok)
+	require.False(t, ok)
 
 	v.AddValidation(generator)
 	_, ok = v.Generators[generator.Name()]
-	s.True(ok)
+	require.True(t, ok)
 }
 
 // TestExampleStruct tests single no-param validation
-func (s *GeneratorTestSuite) TestExampleStruct() {
+func TestExampleStruct(t *testing.T) {
 	out := &bytes.Buffer{}
 	key := "abc123"
 	e := ExampleStruct{
@@ -48,7 +35,7 @@ func (s *GeneratorTestSuite) TestExampleStruct() {
 	v := NewValidateGenerator()
 
 	err := v.Generate(out, e)
-	s.Nil(err)
+	require.NoError(t, err)
 }
 
 // UnknownTagStruct
@@ -57,36 +44,36 @@ type UnknownTagStruct struct {
 }
 
 // TestGenerateWithUnknownTag
-func (s *GeneratorTestSuite) TestGenerateWithUnknownTag() {
+func TestGenerateWithUnknownTag(t *testing.T) {
 	out := &bytes.Buffer{}
 	v := NewValidateGenerator()
 	err := v.Generate(out, UnknownTagStruct{})
-	s.Equal(errors.New("Unknown validation generator name: 'Unknown'"), err)
+	require.Equal(t, errors.New("Unknown validation generator name: 'Unknown'"), err)
 }
 
 // TestGenerateMapValidationCodeNonArrayOrSlice
-func (s *GeneratorTestSuite) TestGenerateMapValidationCodeNonArrayOrSlice() {
+func TestGenerateMapValidationCodeNonArrayOrSlice(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
 	out := &bytes.Buffer{}
 	err := generateMapValidationCode(out, field.Type, "BCP47NonString", int64(1))
-	s.Require().Error(err)
+	require.Error(t, err)
 }
 
 // TestGenerateSliceValidationCodeNonSlice
-func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeNonSlice() {
+func TestGenerateSliceValidationCodeNonSlice(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
 	out := &bytes.Buffer{}
 	err := generateSliceValidationCode(out, field.Type, "BCP47NonString", int64(1))
-	s.Require().Error(err)
+	require.Error(t, err)
 }
 
 // TestGenerateSliceValidationCodeNonSlice
-func (s *GeneratorTestSuite) TestGenerateSliceValidationCodeSlice() {
+func TestGenerateSliceValidationCodeSlice(t *testing.T) {
 	et := reflect.TypeOf(NotNilTestStruct{})
 	field, _ := et.FieldByName("NotNilSlice")
 	out := &bytes.Buffer{}
 	err := generateSliceValidationCode(out, field.Type, field.Name, int64(1))
-	s.Require().Error(err)
+	require.Error(t, err)
 }

@@ -3,32 +3,22 @@ package gokay
 import (
 	"testing"
 
-	"github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/require"
 )
 
-// BCP47TextSuite
-type BCP47TextSuite struct {
-	suite.Suite
-}
-
-// TestBCP47TextSuite
-func TestBCP47TextSuite(t *testing.T) {
-	suite.Run(t, new(BCP47TextSuite))
-}
-
 // TestIsBCP47_Nil
-func (s *BCP47TextSuite) TestIsBCP47_Nil() {
-	s.Nil(IsBCP47(nil))
+func TestIsBCP47_Nil(t *testing.T) {
+	require.NoError(t, IsBCP47(nil))
 }
 
 // TestIsBCP47_English
-func (s *BCP47TextSuite) TestIsBCP47_English() {
+func TestIsBCP47_English(t *testing.T) {
 	str := "English"
-	s.NotNil(IsBCP47(&str))
+	require.EqualError(t, IsBCP47(&str), "language: tag is not well-formed")
 }
 
 // TestIsBCP47_en
-func (s *BCP47TextSuite) TestIsBCP47_en() {
+func TestIsBCP47_en(t *testing.T) {
 	str := "en"
-	s.Nil(IsBCP47(&str))
+	require.NoError(t, IsBCP47(&str))
 }

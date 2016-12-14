@@ -1,40 +1,31 @@
 package gokay
 
 import (
-	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/require"
 )
 
-type HexTestSuite struct {
-	suite.Suite
-}
-
-func TestHexTestSuite(t *testing.T) {
-	suite.Run(t, new(HexTestSuite))
-}
-
 // TestNilString
-func (s *HexTestSuite) TestNilString() {
+func TestNilString(t *testing.T) {
 	var str *string
-	s.Require().Nil(IsHex(str))
+	require.NoError(t, IsHex(str))
 }
 
 // TestIsHex_No0x
-func (s *HexTestSuite) TestIsHex_No0x() {
+func TestIsHex_No0x(t *testing.T) {
 	str := "1a3F"
-	s.Nil(IsHex(&str))
+	require.NoError(t, IsHex(&str))
 }
 
 // TestIsHex_0x
-func (s *HexTestSuite) TestIsHex_0x() {
+func TestIsHex_0x(t *testing.T) {
 	str := "0x1a3F"
-	s.Nil(IsHex(&str))
+	require.NoError(t, IsHex(&str))
 }
 
 // TestIsHex_NotHex
-func (s *HexTestSuite) TestIsHex_NotHex() {
+func TestIsHex_NotHex(t *testing.T) {
 	str := "0x1Gbcq"
-	s.Equal(errors.New("'0x1Gbcq' is not a hexadecimal string"), IsHex(&str))
+	require.EqualError(t, IsHex(&str), "'0x1Gbcq' is not a hexadecimal string")
 }
