@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/zencoder/gokay/gokay"
 	"github.com/stretchr/testify/require"
+	"github.com/zencoder/gokay/gokay"
 )
 
 // TestNotAValidateable
