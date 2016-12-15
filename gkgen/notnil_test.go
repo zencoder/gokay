@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestNotNil
 func TestNotNil(t *testing.T) {
 	nv := NewNotNilValidator()
 	e := ExampleStruct{}
@@ -25,7 +24,6 @@ func TestNotNil(t *testing.T) {
 	)
 }
 
-// TestNotNil_Map
 func TestNotNil_Map(t *testing.T) {
 	nv := NewNotNilValidator()
 	e := NotNilTestStruct{}
@@ -42,7 +40,6 @@ func TestNotNil_Map(t *testing.T) {
 	)
 }
 
-// TestNotNil_Slice
 func TestNotNil_Slice(t *testing.T) {
 	nv := NewNotNilValidator()
 	e := NotNilTestStruct{}

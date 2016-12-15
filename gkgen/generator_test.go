@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestAddValidation
 func TestAddValidation(t *testing.T) {
 	v := ValidateGenerator{
 		Generators: make(map[string]Generater),
@@ -38,12 +37,10 @@ func TestExampleStruct(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// UnknownTagStruct
 type UnknownTagStruct struct {
 	Field string `valid:"Length=(5),Unknown"`
 }
 
-// TestGenerateWithUnknownTag
 func TestGenerateWithUnknownTag(t *testing.T) {
 	out := &bytes.Buffer{}
 	v := NewValidateGenerator()
@@ -51,7 +48,6 @@ func TestGenerateWithUnknownTag(t *testing.T) {
 	require.Equal(t, errors.New("Unknown validation generator name: 'Unknown'"), err)
 }
 
-// TestGenerateMapValidationCodeNonArrayOrSlice
 func TestGenerateMapValidationCodeNonArrayOrSlice(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
@@ -60,7 +56,6 @@ func TestGenerateMapValidationCodeNonArrayOrSlice(t *testing.T) {
 	require.Error(t, err)
 }
 
-// TestGenerateSliceValidationCodeNonSlice
 func TestGenerateSliceValidationCodeNonSlice(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
@@ -69,7 +64,6 @@ func TestGenerateSliceValidationCodeNonSlice(t *testing.T) {
 	require.Error(t, err)
 }
 
-// TestGenerateSliceValidationCodeNonSlice
 func TestGenerateSliceValidationCodeSlice(t *testing.T) {
 	et := reflect.TypeOf(NotNilTestStruct{})
 	field, _ := et.FieldByName("NotNilSlice")

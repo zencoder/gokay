@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// EmptyStruct
 type EmptyStruct struct{}
 
 // TestParseTagSingleNoParamValidation tests single no-param validation
@@ -30,16 +29,15 @@ func TestExampleValidStruct(t *testing.T) {
 	}
 
 	_, err := ParseTag(s, "valid")
-	require.Nil(t, err)
+	require.NoError(t, err)
 }
 
-// Test multiple no-param validaitons
 func TestParseTagMultipleNoParamValidations(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar,biz,buz"
 	vcs, err := ParseTag(s, tag)
 
-	require.Nil(t, err)
+	require.NoError(t, err)
 	barCommand := NewValidationCommand("bar")
 	bizCommand := NewValidationCommand("biz")
 	buzCommand := NewValidationCommand("buz")
@@ -62,7 +60,7 @@ func TestParseTagTrailingCommas(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar,"
 	vcs, err := ParseTag(s, tag)
-	require.Nil(t, err)
+	require.NoError(t, err)
 	expectedVcs := []ValidationCommand{NewValidationCommand("bar")}
 	require.Equal(t, expectedVcs, vcs)
 
@@ -112,7 +110,7 @@ func TestParseTagWithMultipleParams(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1)"
 	vcs, err := ParseTag(s, tag)
-	require.Nil(t, err)
+	require.NoError(t, err)
 	require.Equal(t, 1, len(vcs))
 	require.Equal(t, "bar", vcs[0].Name())
 	require.Equal(t, 2, len(vcs[0].Params))
@@ -124,7 +122,7 @@ func TestParseTag2ValidationsWith1ParamEach(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1),foo=(foo0)"
 	vcs, err := ParseTag(s, tag)
-	require.Nil(t, err)
+	require.NoError(t, err)
 	require.Equal(t, 2, len(vcs))
 
 	require.Equal(t, "bar", vcs[0].Name())

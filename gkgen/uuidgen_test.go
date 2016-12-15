@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestGenerateUUIDValidationCode_String
 func TestGenerateUUIDValidationCode_String(t *testing.T) {
 	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
@@ -22,7 +21,6 @@ func TestGenerateUUIDValidationCode_String(t *testing.T) {
 	require.Equal(t, "if err := gokay.IsUUID(&s.UUIDString); err != nil {\nerrorsUUIDString = append(errorsUUIDString, err)\n}", code)
 }
 
-// TestGenerateUUIDValidationCode_StringPtr
 func TestGenerateUUIDValidationCode_StringPtr(t *testing.T) {
 	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
@@ -34,7 +32,6 @@ func TestGenerateUUIDValidationCode_StringPtr(t *testing.T) {
 	require.Equal(t, "if err := gokay.IsUUID(s.UUIDStringPtr); err != nil {\nerrorsUUIDStringPtr = append(errorsUUIDStringPtr, err)\n}", code)
 }
 
-// TestGenerateUUIDValidationCode_NonString
 func TestGenerateUUIDValidationCode_NonString(t *testing.T) {
 	v := NewUUIDValidator()
 	e := UUIDTestStruct{}
@@ -45,7 +42,6 @@ func TestGenerateUUIDValidationCode_NonString(t *testing.T) {
 	require.Equal(t, errors.New("UUIDValidator does not support fields of type: 'int'"), err)
 }
 
-// UUIDTestStruct
 type UUIDTestStruct struct {
 	UUIDString    string  `valid:"UUID"`
 	UUIDStringPtr *string `valid:"UUID"`

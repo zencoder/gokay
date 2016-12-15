@@ -1,3 +1,0 @@
-package gokay
-
-// NO-OP

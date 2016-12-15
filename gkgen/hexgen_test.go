@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestGenerateHexValidationCode_String
 func TestGenerateHexValidationCode_String(t *testing.T) {
 	hv := NewHexValidator()
 	e := ExampleStruct{}
@@ -21,7 +20,6 @@ func TestGenerateHexValidationCode_String(t *testing.T) {
 	require.Equal(t, "if err := gokay.IsHex(&s.HexString); err != nil {\nerrorsHexString = append(errorsHexString, err)\n}", code)
 }
 
-// TestGenerateHexValidationCode_StringPtr
 func TestGenerateHexValidationCode_StringPtr(t *testing.T) {
 	hv := NewHexValidator()
 	e := ExampleStruct{}

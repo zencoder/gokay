@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestGenerateValidationCode_String
 func TestGenerateValidationCode_String(t *testing.T) {
 	lv := NewLengthValidator()
 	e := ExampleStruct{}
@@ -25,7 +24,6 @@ func TestGenerateValidationCode_String(t *testing.T) {
 	)
 }
 
-// TestGenerateValidationCode_StringPtr
 func TestGenerateValidationCode_StringPtr(t *testing.T) {
 	lv := NewLengthValidator()
 	e := ExampleStruct{}

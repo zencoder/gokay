@@ -39,7 +39,7 @@ type NotNilTestStruct struct {
 	NotNilInterface interface{}
 }
 
-// ExampleStruct def with tags
+// Example struct definition with tags
 type ExampleStruct struct {
 	HexStringPtr            *string `valid:"Length=(16),NotNil,Hex"`
 	HexString               string  `valid:"Length=(12),Hex"`
@@ -50,12 +50,10 @@ type ExampleStruct struct {
 	BCP47NonStringPtr       *int
 }
 
-// TestValidate
 type TestValidate struct {
 	Valid bool
 }
 
-// Validate
 func (s TestValidate) Validate() error {
 	if !s.Valid {
 		return gokay.ErrorMap{
@@ -65,15 +63,12 @@ func (s TestValidate) Validate() error {
 	return nil
 }
 
-// AlwaysValid
 type AlwaysValid struct{}
 
-// Validate
 func (s AlwaysValid) Validate() error {
 	return nil
 }
 
-// Example
 type Example struct {
 	MapOfInterfaces map[string]interface{} `valid:"NotNil"`
 }

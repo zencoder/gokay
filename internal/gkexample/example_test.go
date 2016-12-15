@@ -10,7 +10,6 @@ import (
 	"github.com/zencoder/gokay/gokay"
 )
 
-// TestNotAValidateable
 func TestNotAValidateable(t *testing.T) {
 	underTest := NoImplicitValidate{}
 
@@ -20,7 +19,6 @@ func TestNotAValidateable(t *testing.T) {
 	require.False(t, tut.Implements(validateable.Elem()))
 }
 
-// TestHasValidateImplicit
 func TestHasValidateImplicit(t *testing.T) {
 	underTest := HasValidateImplicit{}
 
@@ -30,7 +28,6 @@ func TestHasValidateImplicit(t *testing.T) {
 	require.True(t, tut.Implements(validateable.Elem()))
 }
 
-// TestHasValidateImplicit_Validate
 func TestHasValidateImplicit_Validate(t *testing.T) {
 	underTest := HasValidateImplicit{
 		InvalidStruct: &TestValidate{},
@@ -53,7 +50,6 @@ func TestHasValidateImplicit_Validate(t *testing.T) {
 	}, ea)
 }
 
-// TestHasValidateImplicit_NilInvalidStruct
 func TestHasValidateImplicit_NilInvalidStruct(t *testing.T) {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -63,7 +59,6 @@ func TestHasValidateImplicit_NilInvalidStruct(t *testing.T) {
 	require.NoError(t, err)
 }
 
-// TestValidateImplicit_MapOfStruct
 func TestValidateImplicit_MapOfStruct(t *testing.T) {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -116,7 +111,6 @@ func TestValidateImplicit_MapOfStructPtrs(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateImplicit_MapOfMapsOfStructs
 func TestValidateImplicit_MapOfMapsOfStructs(t *testing.T) {
 	underTest := HasValidateImplicit{
 		InvalidStruct: nil,
@@ -154,7 +148,6 @@ func TestValidateImplicit_MapOfMapsOfStructs(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateImplicit_MapOfMapsOfSlices
 func TestValidateImplicit_MapOfMapsOfSlices(t *testing.T) {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -227,7 +220,6 @@ func TestValidateImplicit_MapOfMapsOfSlices(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateImplicit_MapOfSlicesOfMaps
 func TestValidateImplicit_MapOfSlicesOfMaps(t *testing.T) {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -292,7 +284,6 @@ func TestValidateImplicit_MapOfSlicesOfMaps(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateImplicit_MapOfInterfaces
 func TestValidateImplicit_MapOfInterfaces(t *testing.T) {
 	vErr := gokay.ErrorMap{
 		"Field": gokay.ErrorSlice{errors.New("invalid when false")},
@@ -345,7 +336,6 @@ func TestValidateImplicit_MapOfInterfaces(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateNotNil_Slice
 func TestValidateNotNil_Slice(t *testing.T) {
 	expected := gokay.ErrorMap{
 		"NotNilSlice": gokay.ErrorSlice{errors.New("is Nil")},
@@ -359,7 +349,6 @@ func TestValidateNotNil_Slice(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-// TestValidateNotNil_Map
 func TestValidateNotNil_Map(t *testing.T) {
 	expected := gokay.ErrorMap{
 		"NotNilMap": gokay.ErrorSlice{errors.New("is Nil")},

@@ -12,7 +12,6 @@ type TestData struct {
 	BCP47String *string
 }
 
-// TestIsBCP47_ParamsLength
 func TestIsBCP47_ParamsLength(t *testing.T) {
 	params := []string{"I'll break..."}
 	et := reflect.TypeOf(ExampleStruct{})
@@ -22,7 +21,6 @@ func TestIsBCP47_ParamsLength(t *testing.T) {
 	require.Error(t, err)
 }
 
-// TestIsBCP47_FieldPtr
 func TestIsBCP47_FieldPtr(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
@@ -31,7 +29,6 @@ func TestIsBCP47_FieldPtr(t *testing.T) {
 	require.Error(t, err)
 }
 
-// TestIsBCP47_FieldNestedPtr
 func TestIsBCP47_FieldNestedPtr(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonStringPtr")
@@ -40,7 +37,6 @@ func TestIsBCP47_FieldNestedPtr(t *testing.T) {
 	require.Error(t, err)
 }
 
-// TestGenerateBCP47ValidationCode_String
 func TestGenerateBCP47ValidationCode_String(t *testing.T) {
 	hv := NewBCP47Validator()
 	e := ExampleStruct{}
@@ -57,7 +53,6 @@ func TestGenerateBCP47ValidationCode_String(t *testing.T) {
 	)
 }
 
-// TestGenerateBCP47ValidationCode_StringPtr
 func TestGenerateBCP47ValidationCode_StringPtr(t *testing.T) {
 	hv := NewBCP47Validator()
 	e := ExampleStruct{}

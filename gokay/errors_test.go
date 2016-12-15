@@ -1,4 +1,4 @@
-package gokay_test
+package gokay
 
 import (
 	"encoding/json"
@@ -6,67 +6,58 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"github.com/zencoder/gokay/gokay"
 )
 
-// NoValidate
 type NoValidate struct{}
 
-// HasValidate
 type HasValidate struct{}
 
-// Validate
 func (s HasValidate) Validate() error {
 	return errors.New("Validating 'HasValidate' instance")
 }
 
-// TestValidate
 func TestValidate(t *testing.T) {
 	a := HasValidate{}
 	b := &HasValidate{}
 	c := NoValidate{}
 
-	err := gokay.Validate(a)
+	err := Validate(a)
 	require.Equal(t, errors.New("Validating 'HasValidate' instance"), err)
 
-	err = gokay.Validate(b)
+	err = Validate(b)
 	require.Equal(t, errors.New("Validating 'HasValidate' instance"), err)
 
-	err = gokay.Validate(c)
+	err = Validate(c)
 	require.NoError(t, err)
 }
 
-// TestErrorSliceError_Empty
 func TestErrorSliceError_Empty(t *testing.T) {
-	ea := gokay.ErrorSlice{}
+	ea := ErrorSlice{}
 
 	require.Equal(t, "[]", ea.Error())
 }
 
-// TestErrorSliceError_MultiElements
 func TestErrorSliceError_MultiElements(t *testing.T) {
-	ea := gokay.ErrorSlice{
+	ea := ErrorSlice{
 		errors.New("foo"),
 		errors.New("bar"),
 		nil,
-		gokay.ErrorSlice{errors.New("this is"), errors.New("nested")},
+		ErrorSlice{errors.New("this is"), errors.New("nested")},
 	}
 
 	require.Equal(t, "[\"foo\",\"bar\",null,[\"this is\",\"nested\"]]", ea.Error())
 }
 
-// TestErrorMapError_Empty
 func TestErrorMapError_Empty(t *testing.T) {
-	em := gokay.ErrorMap{}
+	em := ErrorMap{}
 	require.Equal(t, "{}", em.Error())
 }
 
-// TestErrorMapError_NilValue
 func TestErrorMapError_NilValue(t *testing.T) {
-	em := gokay.ErrorMap{
+	em := ErrorMap{
 		"flat":                nil,
-		"nestedErrorSlice":    gokay.ErrorSlice{errors.New("this is"), errors.New("nested")},
-		"nestedEmptyErrorMap": make(gokay.ErrorMap),
+		"nestedErrorSlice":    ErrorSlice{errors.New("this is"), errors.New("nested")},
+		"nestedEmptyErrorMap": make(ErrorMap),
 	}
 
 	expectedJSONAsMap := make(map[string]interface{})
@@ -77,12 +68,11 @@ func TestErrorMapError_NilValue(t *testing.T) {
 	require.Equal(t, expectedJSONAsMap, actualJSONAsMap)
 }
 
-// TestErrorMapError_MultipleValues
 func TestErrorMapError_MultipleValues(t *testing.T) {
-	em := gokay.ErrorMap{
+	em := ErrorMap{
 		"flat":                errors.New(`"flat" "error"`),
-		"nestedErrorSlice":    gokay.ErrorSlice{errors.New("this is"), errors.New("nested")},
-		"nestedEmptyErrorMap": make(gokay.ErrorMap),
+		"nestedErrorSlice":    ErrorSlice{errors.New("this is"), errors.New("nested")},
+		"nestedEmptyErrorMap": make(ErrorMap),
 	}
 
 	expectedJSONAsMap := make(map[string]interface{})
