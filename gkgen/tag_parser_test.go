@@ -4,170 +4,133 @@ import (
 	"io"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
+	"github.com/stretchr/testify/require"
 )
 
-// EmptyStruct
 type EmptyStruct struct{}
 
-// TagParserTestSuite
-type TagParserTestSuite struct {
-	suite.Suite
-}
-
-// SetupTest
-func (suite *TagParserTestSuite) SetupTest() {}
-
-// TestTagParserTestSuite
-func TestTagParserTestSuite(t *testing.T) {
-	suite.Run(t, new(TagParserTestSuite))
-}
-
 // TestParseTagSingleNoParamValidation tests single no-param validation
-func (suite *TagParserTestSuite) TestParseTagSingleNoParamValidation() {
+func TestParseTagSingleNoParamValidation(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar"
 	vcs, err := ParseTag(s, tag)
-	assert.Nil(suite.T(), err)
+	require.NoError(t, err)
 
 	expectedCommand := NewValidationCommand("bar")
-	assert.Equal(suite.T(), expectedCommand, vcs[0])
-	assert.Equal(suite.T(), 1, len(vcs))
+	require.Equal(t, expectedCommand, vcs[0])
+	require.Equal(t, 1, len(vcs))
 }
 
 // Test single no-param validation
-func (suite *TagParserTestSuite) TestExampleStruct() {
+func TestExampleValidStruct(t *testing.T) {
 	key := "abc123"
 	s := ExampleStruct{
 		HexStringPtr: &key,
 	}
 
 	_, err := ParseTag(s, "valid")
-	assert.Nil(suite.T(), err)
+	require.NoError(t, err)
 }
 
-// Test multiple no-param validaitons
-func (suite *TagParserTestSuite) TestParseTagMultipleNoParamValidations() {
+func TestParseTagMultipleNoParamValidations(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar,biz,buz"
 	vcs, err := ParseTag(s, tag)
 
-	assert.Nil(suite.T(), err)
+	require.NoError(t, err)
 	barCommand := NewValidationCommand("bar")
 	bizCommand := NewValidationCommand("biz")
 	buzCommand := NewValidationCommand("buz")
 
 	expectedVcs := []ValidationCommand{barCommand, bizCommand, buzCommand}
 
-	assert.Equal(suite.T(), expectedVcs, vcs)
+	require.Equal(t, expectedVcs, vcs)
 }
 
 // Test leading comma
-func (suite *TagParserTestSuite) TestParseTagLeadingComma() {
+func TestParseTagLeadingComma(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := ",bar"
 	_, err := ParseTag(s, tag)
-	suite.NotNil(err)
+	require.Error(t, err)
 }
 
 // Test trailing commas
-func (suite *TagParserTestSuite) TestParseTagTrailingCommas() {
+func TestParseTagTrailingCommas(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar,"
 	vcs, err := ParseTag(s, tag)
-	assert.Nil(suite.T(), err)
+	require.NoError(t, err)
 	expectedVcs := []ValidationCommand{NewValidationCommand("bar")}
-	assert.Equal(suite.T(), expectedVcs, vcs)
+	require.Equal(t, expectedVcs, vcs)
 
 	tag = "two_commas,,"
 	_, err = ParseTag(s, tag)
-	suite.NotNil(err)
+	require.Error(t, err)
 }
 
 // Test validation with multiple parameters
-func (suite *TagParserTestSuite) TestParseTagWithConstParam() {
+func TestParseTagWithConstParam(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(hello world,\\)How are you?)"
 	vcs, err := ParseTag(s, tag)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), 1, len(vcs))
-	assert.Equal(suite.T(), "bar", vcs[0].Name())
-	assert.Equal(suite.T(), 1, len(vcs[0].Params))
-	assert.Equal(suite.T(), "hello world,)How are you?", vcs[0].Params[0])
+	require.NoError(t, err)
+	require.Equal(t, 1, len(vcs))
+	require.Equal(t, "bar", vcs[0].Name())
+	require.Equal(t, 1, len(vcs[0].Params))
+	require.Equal(t, "hello world,)How are you?", vcs[0].Params[0])
 }
 
-func (suite *TagParserTestSuite) TestParseTagWithConstParamSyntaxError() {
+func TestParseTagWithConstParamSyntaxError(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(?foo\\)[biz]"
 	_, err := ParseTag(s, tag)
-	suite.NotNil(err)
+	require.Error(t, err)
 }
 
-func (suite *TagParserTestSuite) TestParseTagMissingParamSyntaxError() {
+func TestParseTagMissingParamSyntaxError(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=,foo"
 	_, err := ParseTag(s, tag)
-	suite.NotNil(err)
+	require.Error(t, err)
 
 	tag = "bar="
 	_, err = ParseTag(s, tag)
-	assert.Equal(suite.T(), io.EOF, err)
+	require.Equal(t, io.EOF, err)
 }
 
-func (suite *TagParserTestSuite) TestParseTagLeadingEquals() {
+func TestParseTagLeadingEquals(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "="
 	_, err := ParseTag(s, tag)
-	suite.NotNil(err)
+	require.Error(t, err)
 }
 
-func (suite *TagParserTestSuite) TestParseTagWithMultipleParams() {
+func TestParseTagWithMultipleParams(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1)"
 	vcs, err := ParseTag(s, tag)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), 1, len(vcs))
-	assert.Equal(suite.T(), "bar", vcs[0].Name())
-	assert.Equal(suite.T(), 2, len(vcs[0].Params))
-	assert.Equal(suite.T(), "bar0", vcs[0].Params[0])
-	assert.Equal(suite.T(), "bar1", vcs[0].Params[1])
+	require.NoError(t, err)
+	require.Equal(t, 1, len(vcs))
+	require.Equal(t, "bar", vcs[0].Name())
+	require.Equal(t, 2, len(vcs[0].Params))
+	require.Equal(t, "bar0", vcs[0].Params[0])
+	require.Equal(t, "bar1", vcs[0].Params[1])
 }
 
-func (suite *TagParserTestSuite) TestParseTag2ValidationsWith1ParamEach() {
+func TestParseTag2ValidationsWith1ParamEach(t *testing.T) {
 	s := new(EmptyStruct)
 	tag := "bar=(bar0)(bar1),foo=(foo0)"
 	vcs, err := ParseTag(s, tag)
-	assert.Nil(suite.T(), err)
-	assert.Equal(suite.T(), 2, len(vcs))
+	require.NoError(t, err)
+	require.Equal(t, 2, len(vcs))
 
-	assert.Equal(suite.T(), "bar", vcs[0].Name())
-	assert.Equal(suite.T(), 2, len(vcs[0].Params))
-	assert.Equal(suite.T(), "bar0", vcs[0].Params[0])
-	assert.Equal(suite.T(), "bar1", vcs[0].Params[1])
+	require.Equal(t, "bar", vcs[0].Name())
+	require.Equal(t, 2, len(vcs[0].Params))
+	require.Equal(t, "bar0", vcs[0].Params[0])
+	require.Equal(t, "bar1", vcs[0].Params[1])
 
-	assert.Equal(suite.T(), "foo", vcs[1].Name())
-	assert.Equal(suite.T(), 1, len(vcs[1].Params))
-	assert.Equal(suite.T(), "foo0", vcs[1].Params[0])
-}
-
-// Intptr provides an int typed pointer
-func Intptr(v int) *int {
-	p := new(int)
-	*p = v
-	return p
-}
-
-// Float64ptr provides a float64 typed pointer
-func Float64ptr(v float64) *float64 {
-	p := new(float64)
-	*p = v
-	return p
-}
-
-// Boolptr provides a boolean typed pointer
-func Boolptr(v bool) *bool {
-	p := new(bool)
-	*p = v
-	return p
+	require.Equal(t, "foo", vcs[1].Name())
+	require.Equal(t, 1, len(vcs[1].Params))
+	require.Equal(t, "foo0", vcs[1].Params[0])
 }
