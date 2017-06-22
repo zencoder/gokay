@@ -25,3 +25,12 @@ func TestIsUUID_NotUUIDTooLong(t *testing.T) {
 	str := "AB603c9a2a-38db-4987-932a-2f57733a29fQ"
 	require.EqualError(t, IsUUID(&str), "'AB603c9a2a-38db-4987-932a-2f57733a29fQ' is not a UUID")
 }
+
+func BenchmarkIsUUID(b *testing.B) {
+	benchUUID := "603C9a2a-38dB-4987-932a-2f57733a29f1"
+	var err error
+	for n := 0; n < b.N; n++ {
+		err = IsUUID(&benchUUID)
+	}
+	devNull(err)
+}
