@@ -22,3 +22,33 @@ func IsHex(s *string) error {
 
 	return nil
 }
+
+var (
+	re = regexp.MustCompile("^(0x)?[0-9a-fA-F]+$")
+)
+
+// IsHex validates that the given string is a hex value
+func IsHexV2(s *string) error {
+	if s == nil {
+		return nil
+	}
+
+	if !re.MatchString(strings.ToLower(*s)) {
+		return fmt.Errorf("'%s' is not a hexadecimal string", *s)
+	}
+
+	return nil
+}
+
+// IsHex validates that the given string is a hex value
+func IsHexV3(s *string) error {
+	if s == nil {
+		return nil
+	}
+
+	if !re.MatchString(*s) {
+		return fmt.Errorf("'%s' is not a hexadecimal string", *s)
+	}
+
+	return nil
+}
