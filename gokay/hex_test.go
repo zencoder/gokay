@@ -25,3 +25,14 @@ func TestIsHex_NotHex(t *testing.T) {
 	str := "0x1Gbcq"
 	require.EqualError(t, IsHex(&str), "'0x1Gbcq' is not a hexadecimal string")
 }
+
+func BenchmarkIsHex(b *testing.B) {
+	benchHex := "0x1234567890ABCDEF"
+	var err error
+	for n := 0; n < b.N; n++ {
+		err = IsHex(&benchHex)
+	}
+	devNull(err)
+}
+
+func devNull(i interface{}) {}

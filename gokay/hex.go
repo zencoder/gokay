@@ -3,7 +3,10 @@ package gokay
 import (
 	"fmt"
 	"regexp"
-	"strings"
+)
+
+var (
+	hexRegexp = regexp.MustCompile("^(0x)?[0-9a-fA-F]+$")
 )
 
 // IsHex validates that the given string is a hex value
@@ -12,11 +15,7 @@ func IsHex(s *string) error {
 		return nil
 	}
 
-	matches, err := regexp.MatchString("^(0x)?[0-9a-f]+$", strings.ToLower(*s))
-	if err != nil {
-		return err
-	}
-	if !matches {
+	if !hexRegexp.MatchString(*s) {
 		return fmt.Errorf("'%s' is not a hexadecimal string", *s)
 	}
 
