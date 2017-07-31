@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
+	"log"
 	"reflect"
 )
 
@@ -126,7 +126,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 			mapBuf := &bytes.Buffer{}
 			err := generateMapValidationCode(mapBuf, fieldType, field.Name, 0)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "WARNING: Cannot generate recursive validation of map '%s'. Error: '%s'\n", field.Name, err.Error())
+				log.Printf("WARNING: Cannot generate recursive validation of map %q, %s", field.Name, err.Error())
 			} else {
 				io.Copy(fvBuf, mapBuf)
 				recursiveValidate = true
@@ -136,7 +136,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 			slBuf := &bytes.Buffer{}
 			err := generateSliceValidationCode(slBuf, fieldType, field.Name, 0)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "WARNING: Cannot generate recursive validation of slice '%s'. Error: '%s'\n", field.Name, err.Error())
+				log.Printf("WARNING: Cannot generate recursive validation of slice %q, %s", field.Name, err.Error())
 			} else {
 				io.Copy(fvBuf, slBuf)
 				recursiveValidate = true

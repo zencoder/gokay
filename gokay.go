@@ -33,7 +33,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, usage)
 		return
 	}
-	log.Println("gokay started. file:", args[0])
 
 	genPackage := "gkgen"
 	genConstructor := "NewValidator"
@@ -64,9 +63,7 @@ func main() {
 	}
 	defer tempOut.Close()
 
-	outWriter := io.MultiWriter(tempOut, os.Stdout)
-
-	fmt.Println(tempDir)
+	outWriter := io.MultiWriter(tempOut)
 
 	fset := token.NewFileSet() // positions are relative to fset
 
@@ -142,5 +139,5 @@ func main() {
 		log.Printf("Warning: Deleting intermediate temp files %v failed (although gokay run appears to have succeeded): %v\n", tempDir, err.Error())
 	}
 
-	log.Println("gokay finished. file:", args[0])
+	log.Println("gokay finished file:", args[0])
 }
