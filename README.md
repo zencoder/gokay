@@ -13,7 +13,7 @@ gokay generated Validate methods will return an ErrorMap that implements the Err
 
 This project uses [Glide](https://github.com/Masterminds/glide) to manage it's dependencies.  Please refer to the glide docs to see how to install and use glide.
 
-This project is tested on go 1.7.1 and glide 0.12.1
+This project is tested on go 1.8.3 and glide 0.12.3
 
 ```sh
 mkdir -p $GOPATH/github.com/zencoder
