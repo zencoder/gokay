@@ -18,7 +18,7 @@ func NewBCP47Validator() *BCP47Validator {
 }
 
 // Generate generates validation code
-func (s *BCP47Validator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+func (s *BCP47Validator) Generate(fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 0 {
 		return "", errors.New("BCP47 takes no parameters")
 	}

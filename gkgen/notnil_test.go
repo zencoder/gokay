@@ -14,7 +14,7 @@ func TestNotNil(t *testing.T) {
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("HexStringPtr")
-	code, err := nv.Generate(et, field, []string{})
+	code, err := nv.Generate(field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(
@@ -30,7 +30,7 @@ func TestNotNil_Map(t *testing.T) {
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("NotNilMap")
-	code, err := nv.Generate(et, field, []string{})
+	code, err := nv.Generate(field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(
@@ -46,7 +46,7 @@ func TestNotNil_Slice(t *testing.T) {
 	et := reflect.TypeOf(e)
 
 	field, _ := et.FieldByName("NotNilSlice")
-	code, err := nv.Generate(et, field, []string{})
+	code, err := nv.Generate(field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(

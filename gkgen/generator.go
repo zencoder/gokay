@@ -11,7 +11,7 @@ import (
 
 // Generater defines the behavior of types that generate validation code
 type Generater interface {
-	Generate(reflect.Type, reflect.StructField, []string) (string, error)
+	Generate(reflect.StructField, []string) (string, error)
 	Name() string
 }
 
@@ -32,6 +32,7 @@ func NewValidateGenerator() *ValidateGenerator {
 	v.AddValidation(NewHexValidator())
 	v.AddValidation(NewUUIDValidator())
 	v.AddValidation(NewBCP47Validator())
+	v.AddValidation(NewMinLengthValidator())
 	return v
 }
 
@@ -80,7 +81,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 				if _, ok := s.Generators[vc.name]; !ok {
 					return fmt.Errorf("Unknown validation generator name: '%s'", vc.name)
 				}
-				code, err := s.Generators[vc.name].Generate(structType, field, vc.Params)
+				code, err := s.Generators[vc.name].Generate(field, vc.Params)
 				fmt.Fprintf(fvBuf, "// %s", vc.name)
 				fmt.Fprintln(fvBuf, code)
 				if err != nil {
