@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-// MinLengthValidateGen generates code that will verify the MinLength of a String, Slice, or Map (or their respective pointers)
+// MinLengthValidateGen generates code that will verify the MinLength of a String or String pointer.
 // It will flag nil pointers as valid, use in conjunction with NotNil validator if you don't want nil values
 type MinLengthValidateGen struct {
 	name string
