@@ -35,10 +35,10 @@ func TestMinLengthString(t *testing.T) {
 		String    string
 		MinLength int64
 	}{
+		{String: "foo", MinLength: 1},
 		{String: "foo", MinLength: 3},
 		{String: "", MinLength: 0},
 		{String: "a", MinLength: 1},
-		{String: "a", MinLength: 100},
 	}
 	for _, tc := range validCases {
 		tc := tc
@@ -52,9 +52,9 @@ func TestMinLengthString(t *testing.T) {
 		String    string
 		MinLength int64
 	}{
-		{String: "foo", MinLength: 1},
-		{String: "1", MinLength: 0},
-		{String: "", MinLength: -1},
+		{String: "1", MinLength: 2},
+		{String: "a", MinLength: 100},
+		{String: "", MinLength: 1},
 	}
 	for _, tc := range invalidCases {
 		tc := tc

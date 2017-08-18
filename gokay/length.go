@@ -25,7 +25,7 @@ func MinLengthString(expected int64, str *string) error {
 		return nil // Covers the case where a value can be Nil OR has a length constraint
 	}
 
-	if expected < int64(len(*str)) {
+	if expected > int64(len(*str)) {
 		return fmt.Errorf("Length was '%d', needs to be at least '%d'", len(*str), expected)
 	}
 	return nil
