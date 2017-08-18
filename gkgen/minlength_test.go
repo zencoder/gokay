@@ -14,10 +14,6 @@ func TestMinLengthGenerator(t *testing.T) {
 		BoolPtr   *bool
 		String    string
 		StringPtr *string
-		Slice     []string
-		SlicePtr  *[]string
-		Map       map[string]string
-		MapPtr    *map[string]string
 	}
 
 	t.Run("RequireParam", func(t *testing.T) {
@@ -102,68 +98,6 @@ func TestMinLengthGenerator(t *testing.T) {
 		assert.NoError(err)
 
 		assert.Equal("if err := gokay.MinLengthString(3, s.StringPtr); err != nil {errorsStringPtr = append(errorsStringPtr, err)}", collapseToOneLine(code))
-	})
-
-	t.Run("Slice", func(t *testing.T) {
-		t.Parallel()
-		assert := require.New(t)
-		validator := NewMinLengthValidator()
-		s := minLengthStruct{Slice: []string{"foo"}}
-		st := reflect.TypeOf(s)
-		field, found := st.FieldByName("Slice")
-		assert.True(found)
-
-		code, err := validator.Generate(field, []string{"3"})
-		assert.NoError(err)
-
-		assert.Equal("if err := gokay.MinLengthSlice(3, &s.Slice); err != nil {errorsSlice = append(errorsSlice, err)}", collapseToOneLine(code))
-	})
-
-	t.Run("SlicePtr", func(t *testing.T) {
-		t.Parallel()
-		assert := require.New(t)
-		validator := NewMinLengthValidator()
-		var foo = []string{"foo"}
-		s := minLengthStruct{SlicePtr: &foo}
-		st := reflect.TypeOf(s)
-		field, found := st.FieldByName("SlicePtr")
-		assert.True(found)
-
-		code, err := validator.Generate(field, []string{"3"})
-		assert.NoError(err)
-
-		assert.Equal("if err := gokay.MinLengthSlice(3, s.SlicePtr); err != nil {errorsSlicePtr = append(errorsSlicePtr, err)}", collapseToOneLine(code))
-	})
-
-	t.Run("Map", func(t *testing.T) {
-		t.Parallel()
-		assert := require.New(t)
-		validator := NewMinLengthValidator()
-		s := minLengthStruct{Map: map[string]string{"foo": "foo"}}
-		st := reflect.TypeOf(s)
-		field, found := st.FieldByName("Map")
-		assert.True(found)
-
-		code, err := validator.Generate(field, []string{"3"})
-		assert.NoError(err)
-
-		assert.Equal("if err := gokay.MinLengthMap(3, &s.Map); err != nil {errorsMap = append(errorsMap, err)}", collapseToOneLine(code))
-	})
-
-	t.Run("MapPtr", func(t *testing.T) {
-		t.Parallel()
-		assert := require.New(t)
-		validator := NewMinLengthValidator()
-		var foo = map[string]string{"foo": "foo"}
-		s := minLengthStruct{MapPtr: &foo}
-		st := reflect.TypeOf(s)
-		field, found := st.FieldByName("MapPtr")
-		assert.True(found)
-
-		code, err := validator.Generate(field, []string{"3"})
-		assert.NoError(err)
-
-		assert.Equal("if err := gokay.MinLengthMap(3, s.MapPtr); err != nil {errorsMapPtr = append(errorsMapPtr, err)}", collapseToOneLine(code))
 	})
 }
 

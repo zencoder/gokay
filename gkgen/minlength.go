@@ -39,18 +39,6 @@ func (s *MinLengthValidateGen) Generate(fieldStruct reflect.StructField, params 
 					errors%[2]s = append(errors%[2]s, err)
 				}
 				`, expectedMinLength, fieldStruct.Name), nil
-		case reflect.Slice, reflect.Array:
-			return fmt.Sprintf(`
-				if err := gokay.MinLengthSlice(%d, s.%[2]s); err != nil {
-					errors%[2]s = append(errors%[2]s, err)
-				}
-				`, expectedMinLength, fieldStruct.Name), nil
-		case reflect.Map:
-			return fmt.Sprintf(`
-				if err := gokay.MinLengthMap(%d, s.%[2]s); err != nil {
-					errors%[2]s = append(errors%[2]s, err)
-				}
-				`, expectedMinLength, fieldStruct.Name), nil
 		default:
 			return "", fmt.Errorf("MinLengthValidator does not support fields of type: '*%v'", field.Kind())
 		}
@@ -60,18 +48,6 @@ func (s *MinLengthValidateGen) Generate(fieldStruct reflect.StructField, params 
 	case reflect.String:
 		return fmt.Sprintf(`
 			if err := gokay.MinLengthString(%d, &s.%[2]s); err != nil {
-				errors%[2]s = append(errors%[2]s, err)
-			}
-			`, expectedMinLength, fieldStruct.Name), nil
-	case reflect.Slice, reflect.Array:
-		return fmt.Sprintf(`
-			if err := gokay.MinLengthSlice(%d, &s.%[2]s); err != nil {
-				errors%[2]s = append(errors%[2]s, err)
-			}
-			`, expectedMinLength, fieldStruct.Name), nil
-	case reflect.Map:
-		return fmt.Sprintf(`
-			if err := gokay.MinLengthMap(%d, &s.%[2]s); err != nil {
 				errors%[2]s = append(errors%[2]s, err)
 			}
 			`, expectedMinLength, fieldStruct.Name), nil
