@@ -33,8 +33,6 @@ func (s *MinLengthValidateGen) Generate(fieldStruct reflect.StructField, params 
 	if field.Kind() == reflect.Ptr {
 		field = field.Elem()
 		switch field.Kind() {
-		case reflect.Ptr:
-			return "", errors.New("MinLengthValidator does not support nested pointer fields")
 		case reflect.String:
 			return fmt.Sprintf(`
 				if err := gokay.MinLengthString(%d, s.%[2]s); err != nil {
@@ -59,8 +57,6 @@ func (s *MinLengthValidateGen) Generate(fieldStruct reflect.StructField, params 
 	}
 
 	switch field.Kind() {
-	case reflect.Ptr:
-		return "", errors.New("MinLengthValidator does not support nested pointer fields")
 	case reflect.String:
 		return fmt.Sprintf(`
 			if err := gokay.MinLengthString(%d, &s.%[2]s); err != nil {
