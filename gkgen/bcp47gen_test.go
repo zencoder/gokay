@@ -17,7 +17,7 @@ func TestIsBCP47_ParamsLength(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47String")
 	b := NewBCP47Validator()
-	_, err := b.Generate(field, params)
+	_, err := b.Generate(et, field, params)
 	require.Error(t, err)
 }
 
@@ -25,7 +25,7 @@ func TestIsBCP47_FieldPtr(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonString")
 	b := NewBCP47Validator()
-	_, err := b.Generate(field, []string{})
+	_, err := b.Generate(et, field, []string{})
 	require.Error(t, err)
 }
 
@@ -33,7 +33,7 @@ func TestIsBCP47_FieldNestedPtr(t *testing.T) {
 	et := reflect.TypeOf(ExampleStruct{})
 	field, _ := et.FieldByName("BCP47NonStringPtr")
 	b := NewBCP47Validator()
-	_, err := b.Generate(field, []string{})
+	_, err := b.Generate(et, field, []string{})
 	require.Error(t, err)
 }
 
@@ -43,7 +43,7 @@ func TestGenerateBCP47ValidationCode_String(t *testing.T) {
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("BCP47String")
 
-	code, err := hv.Generate(field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(
@@ -58,7 +58,7 @@ func TestGenerateBCP47ValidationCode_StringPtr(t *testing.T) {
 	e := ExampleStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("BCP47StringPtr")
-	code, err := hv.Generate(field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(

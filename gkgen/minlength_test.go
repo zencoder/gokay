@@ -25,7 +25,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("String")
 		assert.True(found)
 
-		_, err := validator.Generate(field, []string{})
+		_, err := validator.Generate(st, field, []string{})
 		assert.Error(err)
 	})
 
@@ -38,7 +38,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("String")
 		assert.True(found)
 
-		_, err := validator.Generate(field, []string{"wat"})
+		_, err := validator.Generate(st, field, []string{"wat"})
 		assert.Error(err)
 	})
 
@@ -51,7 +51,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("Bool")
 		assert.True(found)
 
-		_, err := validator.Generate(field, []string{"3"})
+		_, err := validator.Generate(st, field, []string{"3"})
 		assert.Error(err)
 	})
 
@@ -65,7 +65,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("BoolPtr")
 		assert.True(found)
 
-		_, err := validator.Generate(field, []string{"3"})
+		_, err := validator.Generate(st, field, []string{"3"})
 		assert.Error(err)
 	})
 
@@ -78,7 +78,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("String")
 		assert.True(found)
 
-		code, err := validator.Generate(field, []string{"3"})
+		code, err := validator.Generate(st, field, []string{"3"})
 		assert.NoError(err)
 
 		assert.Equal("if err := gokay.MinLengthString(3, &s.String); err != nil {errorsString = append(errorsString, err)}", collapseToOneLine(code))
@@ -94,7 +94,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		field, found := st.FieldByName("StringPtr")
 		assert.True(found)
 
-		code, err := validator.Generate(field, []string{"3"})
+		code, err := validator.Generate(st, field, []string{"3"})
 		assert.NoError(err)
 
 		assert.Equal("if err := gokay.MinLengthString(3, s.StringPtr); err != nil {errorsStringPtr = append(errorsStringPtr, err)}", collapseToOneLine(code))

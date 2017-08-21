@@ -20,7 +20,7 @@ func NewLengthValidator() *LengthValidateGen {
 }
 
 // Generate generates validation code
-func (s *LengthValidateGen) Generate(fieldStruct reflect.StructField, params []string) (string, error) {
+func (s *LengthValidateGen) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) != 1 {
 		return "", errors.New("Length validation requires exactly 1 parameter")
 	}

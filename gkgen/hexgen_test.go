@@ -14,7 +14,7 @@ func TestGenerateHexValidationCode_String(t *testing.T) {
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("HexString")
 
-	code, err := hv.Generate(field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(t, "if err := gokay.IsHex(&s.HexString); err != nil {\nerrorsHexString = append(errorsHexString, err)\n}", code)
@@ -25,7 +25,7 @@ func TestGenerateHexValidationCode_StringPtr(t *testing.T) {
 	e := ExampleStruct{}
 	et := reflect.TypeOf(e)
 	field, _ := et.FieldByName("HexStringPtr")
-	code, err := hv.Generate(field, []string{})
+	code, err := hv.Generate(et, field, []string{})
 	require.NoError(t, err)
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(t, "if err := gokay.IsHex(s.HexStringPtr); err != nil {\nerrorsHexStringPtr = append(errorsHexStringPtr, err)\n}", code)
