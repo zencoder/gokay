@@ -1,14 +1,13 @@
-hash: 17cea5d9d36898b303c03551952c987c23efa7166bf6fd3da977a18781eef6f9
-updated: 2016-11-01T16:31:37.134560978Z
+hash: 1cad0469211f7a9c47f57fcbcd8461f72b550902c39375090af90ece6ab0017a
+updated: 2017-08-17T15:16:15.585842251+01:00
 imports:
 - name: github.com/pborman/uuid
-  version: c55201b036063326c5b1b89ccfe45a184973d073
+  version: e790cca94e6cc75c7064b1332e63811d4aae1a53
 - name: github.com/stretchr/testify
   version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
   - require
-  - suite
 - name: golang.org/x/text
   version: a71fd10341b064c10f4a81ceac72bcf70f26ea34
   subpackages:
