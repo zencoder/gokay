@@ -13,7 +13,7 @@ gokay generated Validate methods will return an ErrorMap that implements the Err
 
 This project uses [Glide](https://github.com/Masterminds/glide) to manage it's dependencies.  Please refer to the glide docs to see how to install and use glide.
 
-This project is tested on go 1.8.3 and glide 0.12.3
+This project is tested on go 1.9.1 and glide 0.12.3
 
 ```sh
 mkdir -p $GOPATH/github.com/zencoder
@@ -85,14 +85,14 @@ If a struct does not have any `valid` tags and no fields with implicit validatio
 gokay was built to allow developers to write and attach their own Validations to the Validate generator.
 
 1. Write a function that validates a field. E.g:
-   
+
     ```go
     // LengthString checks if the value of a string pointer has a length of exactly 'expected'
 	func LengthString(expected int64, str *string) error {
 		if str == nil {
 			return nil // Covers the case where a value can be nil OR has a length constraint
 		}
-	
+
 		if expected != int64(len(*str)) {
 			return fmt.Errorf("Length was '%d', needs to be '%d'", len(*str), expected)
 		}
@@ -112,7 +112,7 @@ gokay was built to allow developers to write and attach their own Validations to
    - Name returns the string that will be used as a validation tag
 
 1. GenerateValidationCode should generate a block will leverage the function defined in step 1.  This block will be inserted into the generated `Validate` function. GenerateValidationCode output example:
-    
+
     ```go
     // ValidationName
 	if err := somepackage.ValidationFunction(someparamA, someparamB, s.Field); err != nil {
@@ -124,7 +124,7 @@ gokay was built to allow developers to write and attach their own Validations to
 
 	```go
 	package gkcustom
-	
+
 	// To run: `gokay gkexample NewCustomValidator`
 	func NewCustomGKGenerator() *gkgen.ValidateGenerator {
 		v := gkgen.NewValidateGenerator()
@@ -147,7 +147,7 @@ Tested on go 1.7.1.
 ### Build and run unit tests
 
     make test
-    
+
 ### CI
 
 [This library builds on Circle CI, here.](https://circleci.com/gh/zencoder/gokay/)
