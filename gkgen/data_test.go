@@ -17,3 +17,41 @@ type NotNilTestStruct struct {
 	NotNilSlice     []string               `valid:"NotNil"`
 	NotNilInterface interface{}
 }
+
+// NotZeroTestStruct is used in the NotZero unit tests
+type NotZeroTestStruct struct {
+	NotZeroInt        int        `valid:"NotZero"`
+	NotZeroInt8       int8       `valid:"NotZero"`
+	NotZeroInt16      int16      `valid:"NotZero"`
+	NotZeroInt32      int32      `valid:"NotZero"`
+	NotZeroInt64      int64      `valid:"NotZero"`
+	NotZeroUint       uint       `valid:"NotZero"`
+	NotZeroUint8      uint8      `valid:"NotZero"`
+	NotZeroUint16     uint16     `valid:"NotZero"`
+	NotZeroUint32     uint32     `valid:"NotZero"`
+	NotZeroUint64     uint64     `valid:"NotZero"`
+	NotZeroUintptr    uintptr    `valid:"NotZero"`
+	NotZeroFloat32    float32    `valid:"NotZero"`
+	NotZeroFloat64    float64    `valid:"NotZero"`
+	NotZeroComplex64  complex64  `valid:"NotZero"`
+	NotZeroComplex128 complex128 `valid:"NotZero"`
+}
+
+// NotZeroTestPointerStruct is used in the NotZero unit tests
+type NotZeroTestPointerStruct struct {
+	NotZeroInt        *int        `valid:"NotZero"`
+	NotZeroInt8       *int8       `valid:"NotZero"`
+	NotZeroInt16      *int16      `valid:"NotZero"`
+	NotZeroInt32      *int32      `valid:"NotZero"`
+	NotZeroInt64      *int64      `valid:"NotZero"`
+	NotZeroUint       *uint       `valid:"NotZero"`
+	NotZeroUint8      *uint8      `valid:"NotZero"`
+	NotZeroUint16     *uint16     `valid:"NotZero"`
+	NotZeroUint32     *uint32     `valid:"NotZero"`
+	NotZeroUint64     *uint64     `valid:"NotZero"`
+	NotZeroUintptr    *uintptr    `valid:"NotZero"`
+	NotZeroFloat32    *float32    `valid:"NotZero"`
+	NotZeroFloat64    *float64    `valid:"NotZero"`
+	NotZeroComplex64  *complex64  `valid:"NotZero"`
+	NotZeroComplex128 *complex128 `valid:"NotZero"`
+}

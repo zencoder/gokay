@@ -128,8 +128,6 @@ func (s ExampleStruct) Validate() error {
 	}
 
 }
-
-// Validate
 func (s HasValidateImplicit) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -370,8 +368,6 @@ func (s HasValidateImplicit) Validate() error {
 	}
 
 }
-
-// Validate
 func (s NotNilTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -411,6 +407,42 @@ func (s NotNilTestStruct) Validate() error {
 
 	if len(em) > 0 {
 		return em
+	} else {
+		return nil
 	}
-	return nil
+
+}
+func (s NotZeroTestStruct) Validate() error {
+	em := make(gokay.ErrorMap)
+
+	// BEGIN NotZeroInt64 field Validations
+	errorsNotZeroInt64 := make(gokay.ErrorSlice, 0, 0)
+	// NotZero
+	if s.NotZeroInt64 == 0 {
+		errorsNotZeroInt64 = append(errorsNotZeroInt64, errors.New("is Zero"))
+	}
+
+	if len(errorsNotZeroInt64) > 0 {
+		em["NotZeroInt64"] = errorsNotZeroInt64
+	}
+	// END NotZeroInt64 field Validations
+
+	// BEGIN NotZeroInt64Ptr field Validations
+	errorsNotZeroInt64Ptr := make(gokay.ErrorSlice, 0, 0)
+	// NotZero
+	if s.NotZeroInt64Ptr != nil && *s.NotZeroInt64Ptr == 0 {
+		errorsNotZeroInt64Ptr = append(errorsNotZeroInt64Ptr, errors.New("is Zero"))
+	}
+
+	if len(errorsNotZeroInt64Ptr) > 0 {
+		em["NotZeroInt64Ptr"] = errorsNotZeroInt64Ptr
+	}
+	// END NotZeroInt64Ptr field Validations
+
+	if len(em) > 0 {
+		return em
+	} else {
+		return nil
+	}
+
 }

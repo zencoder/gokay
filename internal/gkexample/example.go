@@ -50,6 +50,11 @@ type ExampleStruct struct {
 	BCP47NonStringPtr       *int
 }
 
+type NotZeroTestStruct struct {
+	NotZeroInt64    int64  `valid:"NotZero"`
+	NotZeroInt64Ptr *int64 `valid:"NotZero"`
+}
+
 type TestValidate struct {
 	Valid bool
 }

@@ -361,3 +361,38 @@ func TestValidateNotNil_Map(t *testing.T) {
 	err := underTest.Validate()
 	require.Equal(t, expected, err)
 }
+
+func TestValidateNotZero_Valid(t *testing.T) {
+	one := int64(1)
+	underTest := NotZeroTestStruct{
+		NotZeroInt64:    1,
+		NotZeroInt64Ptr: &one,
+	}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+func TestValidateNotZero_NilValid(t *testing.T) {
+	underTest := NotZeroTestStruct{
+		NotZeroInt64: 1,
+	}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+
+func TestValidateNotZero_Inalid(t *testing.T) {
+	expected := gokay.ErrorMap{
+		"NotZeroInt64":    gokay.ErrorSlice{errors.New("is Zero")},
+		"NotZeroInt64Ptr": gokay.ErrorSlice{errors.New("is Zero")},
+	}
+
+	zero := int64(0)
+	underTest := NotZeroTestStruct{
+		NotZeroInt64:    0,
+		NotZeroInt64Ptr: &zero,
+	}
+
+	err := underTest.Validate()
+	require.Equal(t, expected, err)
+}
