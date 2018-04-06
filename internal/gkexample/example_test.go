@@ -362,35 +362,44 @@ func TestValidateNotNil_Map(t *testing.T) {
 	require.Equal(t, expected, err)
 }
 
-func TestValidateNotZero_Valid(t *testing.T) {
+func TestValidateNotEqual_Valid(t *testing.T) {
 	one := int64(1)
-	underTest := NotZeroTestStruct{
-		NotZeroInt64:    1,
-		NotZeroInt64Ptr: &one,
+	two := "two"
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:     1,
+		NotEqualInt64Ptr:  &one,
+		NotEqualString:    "2",
+		NotEqualStringPtr: &two,
 	}
 
 	err := underTest.Validate()
 	require.Nil(t, err)
 }
-func TestValidateNotZero_NilValid(t *testing.T) {
-	underTest := NotZeroTestStruct{
-		NotZeroInt64: 1,
+func TestValidateNotEqual_NilValid(t *testing.T) {
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:  1,
+		NotEqualString: "2",
 	}
 
 	err := underTest.Validate()
 	require.Nil(t, err)
 }
 
-func TestValidateNotZero_Inalid(t *testing.T) {
+func TestValidateNotEqual_Inalid(t *testing.T) {
 	expected := gokay.ErrorMap{
-		"NotZeroInt64":    gokay.ErrorSlice{errors.New("is Zero")},
-		"NotZeroInt64Ptr": gokay.ErrorSlice{errors.New("is Zero")},
+		"NotEqualInt64":     gokay.ErrorSlice{errors.New("NotEqualInt64 cannot equal '0'")},
+		"NotEqualInt64Ptr":  gokay.ErrorSlice{errors.New("NotEqualInt64Ptr cannot equal '0'")},
+		"NotEqualString":    gokay.ErrorSlice{errors.New("NotEqualString cannot equal ''")},
+		"NotEqualStringPtr": gokay.ErrorSlice{errors.New("NotEqualStringPtr cannot equal ''")},
 	}
 
 	zero := int64(0)
-	underTest := NotZeroTestStruct{
-		NotZeroInt64:    0,
-		NotZeroInt64Ptr: &zero,
+	empty := ""
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:     0,
+		NotEqualInt64Ptr:  &zero,
+		NotEqualString:    "",
+		NotEqualStringPtr: &empty,
 	}
 
 	err := underTest.Validate()

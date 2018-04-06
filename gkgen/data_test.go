@@ -18,40 +18,42 @@ type NotNilTestStruct struct {
 	NotNilInterface interface{}
 }
 
-// NotZeroTestStruct is used in the NotZero unit tests
-type NotZeroTestStruct struct {
-	NotZeroInt        int        `valid:"NotZero"`
-	NotZeroInt8       int8       `valid:"NotZero"`
-	NotZeroInt16      int16      `valid:"NotZero"`
-	NotZeroInt32      int32      `valid:"NotZero"`
-	NotZeroInt64      int64      `valid:"NotZero"`
-	NotZeroUint       uint       `valid:"NotZero"`
-	NotZeroUint8      uint8      `valid:"NotZero"`
-	NotZeroUint16     uint16     `valid:"NotZero"`
-	NotZeroUint32     uint32     `valid:"NotZero"`
-	NotZeroUint64     uint64     `valid:"NotZero"`
-	NotZeroUintptr    uintptr    `valid:"NotZero"`
-	NotZeroFloat32    float32    `valid:"NotZero"`
-	NotZeroFloat64    float64    `valid:"NotZero"`
-	NotZeroComplex64  complex64  `valid:"NotZero"`
-	NotZeroComplex128 complex128 `valid:"NotZero"`
+// NotEqualTestStruct is used in the NotEqual unit tests
+type NotEqualTestStruct struct {
+	NotEqualInt        int        `valid:"NotEqual=(0)"`
+	NotEqualInt8       int8       `valid:"NotEqual=(0)"`
+	NotEqualInt16      int16      `valid:"NotEqual=(0)"`
+	NotEqualInt32      int32      `valid:"NotEqual=(0)"`
+	NotEqualInt64      int64      `valid:"NotEqual=(0)"`
+	NotEqualUint       uint       `valid:"NotEqual=(0)"`
+	NotEqualUint8      uint8      `valid:"NotEqual=(0)"`
+	NotEqualUint16     uint16     `valid:"NotEqual=(0)"`
+	NotEqualUint32     uint32     `valid:"NotEqual=(0)"`
+	NotEqualUint64     uint64     `valid:"NotEqual=(0)"`
+	NotEqualUintptr    uintptr    `valid:"NotEqual=(0)"`
+	NotEqualFloat32    float32    `valid:"NotEqual=(0)"`
+	NotEqualFloat64    float64    `valid:"NotEqual=(0)"`
+	NotEqualComplex64  complex64  `valid:"NotEqual=(0)"`
+	NotEqualComplex128 complex128 `valid:"NotEqual=(0)"`
+	NotEqualString     string     `valid:"NotEqual=()"`
 }
 
-// NotZeroTestPointerStruct is used in the NotZero unit tests
-type NotZeroTestPointerStruct struct {
-	NotZeroInt        *int        `valid:"NotZero"`
-	NotZeroInt8       *int8       `valid:"NotZero"`
-	NotZeroInt16      *int16      `valid:"NotZero"`
-	NotZeroInt32      *int32      `valid:"NotZero"`
-	NotZeroInt64      *int64      `valid:"NotZero"`
-	NotZeroUint       *uint       `valid:"NotZero"`
-	NotZeroUint8      *uint8      `valid:"NotZero"`
-	NotZeroUint16     *uint16     `valid:"NotZero"`
-	NotZeroUint32     *uint32     `valid:"NotZero"`
-	NotZeroUint64     *uint64     `valid:"NotZero"`
-	NotZeroUintptr    *uintptr    `valid:"NotZero"`
-	NotZeroFloat32    *float32    `valid:"NotZero"`
-	NotZeroFloat64    *float64    `valid:"NotZero"`
-	NotZeroComplex64  *complex64  `valid:"NotZero"`
-	NotZeroComplex128 *complex128 `valid:"NotZero"`
+// NotEqualTestPointerStruct is used in the NotEqual unit tests
+type NotEqualTestPointerStruct struct {
+	NotEqualInt        *int        `valid:"NotEqual=(0)"`
+	NotEqualInt8       *int8       `valid:"NotEqual=(0)"`
+	NotEqualInt16      *int16      `valid:"NotEqual=(0)"`
+	NotEqualInt32      *int32      `valid:"NotEqual=(0)"`
+	NotEqualInt64      *int64      `valid:"NotEqual=(0)"`
+	NotEqualUint       *uint       `valid:"NotEqual=(0)"`
+	NotEqualUint8      *uint8      `valid:"NotEqual=(0)"`
+	NotEqualUint16     *uint16     `valid:"NotEqual=(0)"`
+	NotEqualUint32     *uint32     `valid:"NotEqual=(0)"`
+	NotEqualUint64     *uint64     `valid:"NotEqual=(0)"`
+	NotEqualUintptr    *uintptr    `valid:"NotEqual=(0)"`
+	NotEqualFloat32    *float32    `valid:"NotEqual=(0)"`
+	NotEqualFloat64    *float64    `valid:"NotEqual=(0)"`
+	NotEqualComplex64  *complex64  `valid:"NotEqual=(0)"`
+	NotEqualComplex128 *complex128 `valid:"NotEqual=(0)"`
+	NotEqualString     string      `valid:"NotEqual=(0)"`
 }
