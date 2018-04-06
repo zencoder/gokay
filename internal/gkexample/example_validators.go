@@ -386,8 +386,8 @@ func (s NotEqualTestStruct) Validate() error {
 	// BEGIN NotEqualStringPtr field Validations
 	errorsNotEqualStringPtr := make(gokay.ErrorSlice, 0, 0)
 	// NotEqual
-	if s.NotEqualStringPtr != nil && *s.NotEqualStringPtr == "" {
-		errorsNotEqualStringPtr = append(errorsNotEqualStringPtr, errors.New("NotEqualStringPtr cannot equal ''"))
+	if s.NotEqualStringPtr != nil && *s.NotEqualStringPtr == "gokay" {
+		errorsNotEqualStringPtr = append(errorsNotEqualStringPtr, errors.New("NotEqualStringPtr cannot equal 'gokay'"))
 	}
 
 	if len(errorsNotEqualStringPtr) > 0 {
@@ -410,8 +410,8 @@ func (s NotEqualTestStruct) Validate() error {
 	// BEGIN NotEqualInt64Ptr field Validations
 	errorsNotEqualInt64Ptr := make(gokay.ErrorSlice, 0, 0)
 	// NotEqual
-	if s.NotEqualInt64Ptr != nil && *s.NotEqualInt64Ptr == 0 {
-		errorsNotEqualInt64Ptr = append(errorsNotEqualInt64Ptr, errors.New("NotEqualInt64Ptr cannot equal '0'"))
+	if s.NotEqualInt64Ptr != nil && *s.NotEqualInt64Ptr == 7 {
+		errorsNotEqualInt64Ptr = append(errorsNotEqualInt64Ptr, errors.New("NotEqualInt64Ptr cannot equal '7'"))
 	}
 
 	if len(errorsNotEqualInt64Ptr) > 0 {

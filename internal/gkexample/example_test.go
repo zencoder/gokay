@@ -363,13 +363,13 @@ func TestValidateNotNil_Map(t *testing.T) {
 }
 
 func TestValidateNotEqual_Valid(t *testing.T) {
-	one := int64(1)
-	two := "two"
+	zero := int64(1)
+	empty := ""
 	underTest := NotEqualTestStruct{
 		NotEqualInt64:     1,
-		NotEqualInt64Ptr:  &one,
+		NotEqualInt64Ptr:  &zero,
 		NotEqualString:    "2",
-		NotEqualStringPtr: &two,
+		NotEqualStringPtr: &empty,
 	}
 
 	err := underTest.Validate()
@@ -388,18 +388,18 @@ func TestValidateNotEqual_NilValid(t *testing.T) {
 func TestValidateNotEqual_Inalid(t *testing.T) {
 	expected := gokay.ErrorMap{
 		"NotEqualInt64":     gokay.ErrorSlice{errors.New("NotEqualInt64 cannot equal '0'")},
-		"NotEqualInt64Ptr":  gokay.ErrorSlice{errors.New("NotEqualInt64Ptr cannot equal '0'")},
+		"NotEqualInt64Ptr":  gokay.ErrorSlice{errors.New("NotEqualInt64Ptr cannot equal '7'")},
 		"NotEqualString":    gokay.ErrorSlice{errors.New("NotEqualString cannot equal ''")},
-		"NotEqualStringPtr": gokay.ErrorSlice{errors.New("NotEqualStringPtr cannot equal ''")},
+		"NotEqualStringPtr": gokay.ErrorSlice{errors.New("NotEqualStringPtr cannot equal 'gokay'")},
 	}
 
-	zero := int64(0)
-	empty := ""
+	seven := int64(7)
+	gokay := "gokay"
 	underTest := NotEqualTestStruct{
 		NotEqualInt64:     0,
-		NotEqualInt64Ptr:  &zero,
+		NotEqualInt64Ptr:  &seven,
 		NotEqualString:    "",
-		NotEqualStringPtr: &empty,
+		NotEqualStringPtr: &gokay,
 	}
 
 	err := underTest.Validate()
