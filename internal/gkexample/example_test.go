@@ -361,3 +361,47 @@ func TestValidateNotNil_Map(t *testing.T) {
 	err := underTest.Validate()
 	require.Equal(t, expected, err)
 }
+
+func TestValidateNotEqual_Valid(t *testing.T) {
+	zero := int64(1)
+	empty := ""
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:     1,
+		NotEqualInt64Ptr:  &zero,
+		NotEqualString:    "2",
+		NotEqualStringPtr: &empty,
+	}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+func TestValidateNotEqual_NilValid(t *testing.T) {
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:  1,
+		NotEqualString: "2",
+	}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+
+func TestValidateNotEqual_Inalid(t *testing.T) {
+	expected := gokay.ErrorMap{
+		"NotEqualInt64":     gokay.ErrorSlice{errors.New("NotEqualInt64 cannot equal '0'")},
+		"NotEqualInt64Ptr":  gokay.ErrorSlice{errors.New("NotEqualInt64Ptr cannot equal '7'")},
+		"NotEqualString":    gokay.ErrorSlice{errors.New("NotEqualString cannot equal ''")},
+		"NotEqualStringPtr": gokay.ErrorSlice{errors.New("NotEqualStringPtr cannot equal 'gokay'")},
+	}
+
+	seven := int64(7)
+	gokay := "gokay"
+	underTest := NotEqualTestStruct{
+		NotEqualInt64:     0,
+		NotEqualInt64Ptr:  &seven,
+		NotEqualString:    "",
+		NotEqualStringPtr: &gokay,
+	}
+
+	err := underTest.Validate()
+	require.Equal(t, expected, err)
+}

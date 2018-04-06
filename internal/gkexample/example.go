@@ -50,6 +50,13 @@ type ExampleStruct struct {
 	BCP47NonStringPtr       *int
 }
 
+type NotEqualTestStruct struct {
+	NotEqualString    string  `valid:"NotEqual=()"`
+	NotEqualStringPtr *string `valid:"NotEqual=(gokay)"`
+	NotEqualInt64     int64   `valid:"NotEqual=(0)"`
+	NotEqualInt64Ptr  *int64  `valid:"NotEqual=(7)"`
+}
+
 type TestValidate struct {
 	Valid bool
 }

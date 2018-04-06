@@ -128,8 +128,6 @@ func (s ExampleStruct) Validate() error {
 	}
 
 }
-
-// Validate
 func (s HasValidateImplicit) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -370,8 +368,64 @@ func (s HasValidateImplicit) Validate() error {
 	}
 
 }
+func (s NotEqualTestStruct) Validate() error {
+	em := make(gokay.ErrorMap)
 
-// Validate
+	// BEGIN NotEqualString field Validations
+	errorsNotEqualString := make(gokay.ErrorSlice, 0, 0)
+	// NotEqual
+	if s.NotEqualString == "" {
+		errorsNotEqualString = append(errorsNotEqualString, errors.New("NotEqualString cannot equal ''"))
+	}
+
+	if len(errorsNotEqualString) > 0 {
+		em["NotEqualString"] = errorsNotEqualString
+	}
+	// END NotEqualString field Validations
+
+	// BEGIN NotEqualStringPtr field Validations
+	errorsNotEqualStringPtr := make(gokay.ErrorSlice, 0, 0)
+	// NotEqual
+	if s.NotEqualStringPtr != nil && *s.NotEqualStringPtr == "gokay" {
+		errorsNotEqualStringPtr = append(errorsNotEqualStringPtr, errors.New("NotEqualStringPtr cannot equal 'gokay'"))
+	}
+
+	if len(errorsNotEqualStringPtr) > 0 {
+		em["NotEqualStringPtr"] = errorsNotEqualStringPtr
+	}
+	// END NotEqualStringPtr field Validations
+
+	// BEGIN NotEqualInt64 field Validations
+	errorsNotEqualInt64 := make(gokay.ErrorSlice, 0, 0)
+	// NotEqual
+	if s.NotEqualInt64 == 0 {
+		errorsNotEqualInt64 = append(errorsNotEqualInt64, errors.New("NotEqualInt64 cannot equal '0'"))
+	}
+
+	if len(errorsNotEqualInt64) > 0 {
+		em["NotEqualInt64"] = errorsNotEqualInt64
+	}
+	// END NotEqualInt64 field Validations
+
+	// BEGIN NotEqualInt64Ptr field Validations
+	errorsNotEqualInt64Ptr := make(gokay.ErrorSlice, 0, 0)
+	// NotEqual
+	if s.NotEqualInt64Ptr != nil && *s.NotEqualInt64Ptr == 7 {
+		errorsNotEqualInt64Ptr = append(errorsNotEqualInt64Ptr, errors.New("NotEqualInt64Ptr cannot equal '7'"))
+	}
+
+	if len(errorsNotEqualInt64Ptr) > 0 {
+		em["NotEqualInt64Ptr"] = errorsNotEqualInt64Ptr
+	}
+	// END NotEqualInt64Ptr field Validations
+
+	if len(em) > 0 {
+		return em
+	} else {
+		return nil
+	}
+
+}
 func (s NotNilTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -411,6 +465,8 @@ func (s NotNilTestStruct) Validate() error {
 
 	if len(em) > 0 {
 		return em
+	} else {
+		return nil
 	}
-	return nil
+
 }

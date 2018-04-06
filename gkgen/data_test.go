@@ -17,3 +17,43 @@ type NotNilTestStruct struct {
 	NotNilSlice     []string               `valid:"NotNil"`
 	NotNilInterface interface{}
 }
+
+// NotEqualTestStruct is used in the NotEqual unit tests
+type NotEqualTestStruct struct {
+	NotEqualInt        int        `valid:"NotEqual=(0)"`
+	NotEqualInt8       int8       `valid:"NotEqual=(0)"`
+	NotEqualInt16      int16      `valid:"NotEqual=(0)"`
+	NotEqualInt32      int32      `valid:"NotEqual=(0)"`
+	NotEqualInt64      int64      `valid:"NotEqual=(0)"`
+	NotEqualUint       uint       `valid:"NotEqual=(0)"`
+	NotEqualUint8      uint8      `valid:"NotEqual=(0)"`
+	NotEqualUint16     uint16     `valid:"NotEqual=(0)"`
+	NotEqualUint32     uint32     `valid:"NotEqual=(0)"`
+	NotEqualUint64     uint64     `valid:"NotEqual=(0)"`
+	NotEqualUintptr    uintptr    `valid:"NotEqual=(0)"`
+	NotEqualFloat32    float32    `valid:"NotEqual=(0)"`
+	NotEqualFloat64    float64    `valid:"NotEqual=(0)"`
+	NotEqualComplex64  complex64  `valid:"NotEqual=(0)"`
+	NotEqualComplex128 complex128 `valid:"NotEqual=(0)"`
+	NotEqualString     string     `valid:"NotEqual=()"`
+}
+
+// NotEqualTestPointerStruct is used in the NotEqual unit tests
+type NotEqualTestPointerStruct struct {
+	NotEqualInt        *int        `valid:"NotEqual=(0)"`
+	NotEqualInt8       *int8       `valid:"NotEqual=(0)"`
+	NotEqualInt16      *int16      `valid:"NotEqual=(0)"`
+	NotEqualInt32      *int32      `valid:"NotEqual=(0)"`
+	NotEqualInt64      *int64      `valid:"NotEqual=(0)"`
+	NotEqualUint       *uint       `valid:"NotEqual=(0)"`
+	NotEqualUint8      *uint8      `valid:"NotEqual=(0)"`
+	NotEqualUint16     *uint16     `valid:"NotEqual=(0)"`
+	NotEqualUint32     *uint32     `valid:"NotEqual=(0)"`
+	NotEqualUint64     *uint64     `valid:"NotEqual=(0)"`
+	NotEqualUintptr    *uintptr    `valid:"NotEqual=(0)"`
+	NotEqualFloat32    *float32    `valid:"NotEqual=(0)"`
+	NotEqualFloat64    *float64    `valid:"NotEqual=(0)"`
+	NotEqualComplex64  *complex64  `valid:"NotEqual=(0)"`
+	NotEqualComplex128 *complex128 `valid:"NotEqual=(0)"`
+	NotEqualString     string      `valid:"NotEqual=(0)"`
+}
