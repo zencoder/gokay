@@ -8,6 +8,40 @@ import (
 	"github.com/zencoder/gokay/gokay"
 )
 
+func (s EqualsTestStruct) Validate() error {
+	em := make(gokay.ErrorMap)
+
+	// BEGIN EqualsString field Validations
+	errorsEqualsString := make(gokay.ErrorSlice, 0, 0)
+	// Equals
+	if s.EqualsString != "" && !(s.EqualsString == "cat" || s.EqualsString == "dog" || s.EqualsString == "mouse") {
+		errorsEqualsString = append(errorsEqualsString, errors.New("EqualsString must equal cat or dog or mouse"))
+	}
+
+	if len(errorsEqualsString) > 0 {
+		em["EqualsString"] = errorsEqualsString
+	}
+	// END EqualsString field Validations
+
+	// BEGIN EqualsStringPtr field Validations
+	errorsEqualsStringPtr := make(gokay.ErrorSlice, 0, 0)
+	// Equals
+	if s.EqualsStringPtr != nil && !(*s.EqualsStringPtr == "cat" || *s.EqualsStringPtr == "dog" || *s.EqualsStringPtr == "mouse") {
+		errorsEqualsStringPtr = append(errorsEqualsStringPtr, errors.New("EqualsStringPtr must equal cat or dog or mouse"))
+	}
+
+	if len(errorsEqualsStringPtr) > 0 {
+		em["EqualsStringPtr"] = errorsEqualsStringPtr
+	}
+	// END EqualsStringPtr field Validations
+
+	if len(em) > 0 {
+		return em
+	} else {
+		return nil
+	}
+
+}
 func (s Example) Validate() error {
 	em := make(gokay.ErrorMap)
 

@@ -405,3 +405,40 @@ func TestValidateNotEqual_Inalid(t *testing.T) {
 	err := underTest.Validate()
 	require.Equal(t, expected, err)
 }
+
+func TestValidateEquals_Valid(t *testing.T) {
+	validCases := []string{"cat", "dog", "mouse"}
+
+	for _, tc := range validCases {
+		underTest := EqualsTestStruct{
+			EqualsString:    tc,
+			EqualsStringPtr: &tc,
+		}
+
+		err := underTest.Validate()
+		require.Nil(t, err)
+	}
+}
+
+func TestValidateEquals_NilValid(t *testing.T) {
+	underTest := EqualsTestStruct{}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+
+func TestValidateEquals_Inalid(t *testing.T) {
+	expected := gokay.ErrorMap{
+		"EqualsString":    gokay.ErrorSlice{errors.New("EqualsString must equal cat or dog or mouse")},
+		"EqualsStringPtr": gokay.ErrorSlice{errors.New("EqualsStringPtr must equal cat or dog or mouse")},
+	}
+
+	gokay := "gokay"
+	underTest := EqualsTestStruct{
+		EqualsString:    "Cat",
+		EqualsStringPtr: &gokay,
+	}
+
+	err := underTest.Validate()
+	require.Equal(t, expected, err)
+}

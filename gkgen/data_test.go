@@ -57,3 +57,9 @@ type NotEqualTestPointerStruct struct {
 	NotEqualComplex128 *complex128 `valid:"NotEqual=(0)"`
 	NotEqualString     string      `valid:"NotEqual=(0)"`
 }
+
+// EqualsTestStruct is used in the Equals unit tests
+type EqualsTestStruct struct {
+	EqualsString    string  `valid:"Equals=(cat)(dog)(mouse)"`
+	EqualsStringPtr *string `valid:"Equals=(cat)(dog)(mouse)"`
+}
