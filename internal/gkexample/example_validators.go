@@ -8,40 +8,6 @@ import (
 	"github.com/zencoder/gokay/gokay"
 )
 
-func (s EqualsTestStruct) Validate() error {
-	em := make(gokay.ErrorMap)
-
-	// BEGIN EqualsString field Validations
-	errorsEqualsString := make(gokay.ErrorSlice, 0, 0)
-	// Equals
-	if s.EqualsString != "" && !(s.EqualsString == "cat" || s.EqualsString == "dog" || s.EqualsString == "mouse") {
-		errorsEqualsString = append(errorsEqualsString, errors.New("EqualsString must equal cat or dog or mouse"))
-	}
-
-	if len(errorsEqualsString) > 0 {
-		em["EqualsString"] = errorsEqualsString
-	}
-	// END EqualsString field Validations
-
-	// BEGIN EqualsStringPtr field Validations
-	errorsEqualsStringPtr := make(gokay.ErrorSlice, 0, 0)
-	// Equals
-	if s.EqualsStringPtr != nil && !(*s.EqualsStringPtr == "cat" || *s.EqualsStringPtr == "dog" || *s.EqualsStringPtr == "mouse") {
-		errorsEqualsStringPtr = append(errorsEqualsStringPtr, errors.New("EqualsStringPtr must equal cat or dog or mouse"))
-	}
-
-	if len(errorsEqualsStringPtr) > 0 {
-		em["EqualsStringPtr"] = errorsEqualsStringPtr
-	}
-	// END EqualsStringPtr field Validations
-
-	if len(em) > 0 {
-		return em
-	} else {
-		return nil
-	}
-
-}
 func (s Example) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -496,6 +462,40 @@ func (s NotNilTestStruct) Validate() error {
 		em["NotNilSlice"] = errorsNotNilSlice
 	}
 	// END NotNilSlice field Validations
+
+	if len(em) > 0 {
+		return em
+	} else {
+		return nil
+	}
+
+}
+func (s SetTestStruct) Validate() error {
+	em := make(gokay.ErrorMap)
+
+	// BEGIN SetString field Validations
+	errorsSetString := make(gokay.ErrorSlice, 0, 0)
+	// Set
+	if s.SetString != "" && !(s.SetString == "cat" || s.SetString == "dog" || s.SetString == "mouse") {
+		errorsSetString = append(errorsSetString, errors.New("SetString must equal cat or dog or mouse"))
+	}
+
+	if len(errorsSetString) > 0 {
+		em["SetString"] = errorsSetString
+	}
+	// END SetString field Validations
+
+	// BEGIN SetStringPtr field Validations
+	errorsSetStringPtr := make(gokay.ErrorSlice, 0, 0)
+	// Set
+	if s.SetStringPtr != nil && !(*s.SetStringPtr == "cat" || *s.SetStringPtr == "dog" || *s.SetStringPtr == "mouse") {
+		errorsSetStringPtr = append(errorsSetStringPtr, errors.New("SetStringPtr must equal cat or dog or mouse"))
+	}
+
+	if len(errorsSetStringPtr) > 0 {
+		em["SetStringPtr"] = errorsSetStringPtr
+	}
+	// END SetStringPtr field Validations
 
 	if len(em) > 0 {
 		return em

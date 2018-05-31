@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEquals(t *testing.T) {
-	nv := NewEqualsValidator()
-	e := EqualsTestStruct{}
+func TestSet(t *testing.T) {
+	nv := NewSetValidator()
+	e := SetTestStruct{}
 	et := reflect.TypeOf(e)
 
-	field, ok := et.FieldByName("EqualsString")
+	field, ok := et.FieldByName("SetString")
 	require.True(t, ok)
 	code, err := nv.Generate(et, field, []string{"cat"})
 	require.NoError(t, err)
@@ -35,12 +35,12 @@ func TestEquals(t *testing.T) {
 	)
 }
 
-func TestEqualsPointer(t *testing.T) {
-	nv := NewEqualsValidator()
-	e := EqualsTestStruct{}
+func TestSetPointer(t *testing.T) {
+	nv := NewSetValidator()
+	e := SetTestStruct{}
 	et := reflect.TypeOf(e)
 
-	field, ok := et.FieldByName("EqualsStringPtr")
+	field, ok := et.FieldByName("SetStringPtr")
 	require.True(t, ok)
 	code, err := nv.Generate(et, field, []string{"cat"})
 	require.NoError(t, err)
@@ -61,8 +61,8 @@ func TestEqualsPointer(t *testing.T) {
 	)
 }
 
-func TestEqualsInvalidTypes(t *testing.T) {
-	nv := NewEqualsValidator()
+func TestSetInvalidTypes(t *testing.T) {
+	nv := NewSetValidator()
 	e := NotNilTestStruct{}
 	et := reflect.TypeOf(e)
 
@@ -71,7 +71,7 @@ func TestEqualsInvalidTypes(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(
 		t,
-		"Equals does not work on type 'map'",
+		"Set does not work on type 'map'",
 		err.Error(),
 	)
 
@@ -80,22 +80,22 @@ func TestEqualsInvalidTypes(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(
 		t,
-		"Equals does not work on type 'slice'",
+		"Set does not work on type 'slice'",
 		err.Error(),
 	)
 }
 
-func TestEqualsInvalidParameters(t *testing.T) {
-	nv := NewEqualsValidator()
-	e := EqualsTestStruct{}
+func TestSetInvalidParameters(t *testing.T) {
+	nv := NewSetValidator()
+	e := SetTestStruct{}
 	et := reflect.TypeOf(e)
 
-	field, _ := et.FieldByName("EqualsString")
+	field, _ := et.FieldByName("SetString")
 	_, err := nv.Generate(et, field, []string{})
 	require.Error(t, err)
 	require.Equal(
 		t,
-		"Equals validation requires at least 1 parameter",
+		"Set validation requires at least 1 parameter",
 		err.Error(),
 	)
 }

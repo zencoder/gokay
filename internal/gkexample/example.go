@@ -57,9 +57,9 @@ type NotEqualTestStruct struct {
 	NotEqualInt64Ptr  *int64  `valid:"NotEqual=(7)"`
 }
 
-type EqualsTestStruct struct {
-	EqualsString    string  `valid:"Equals=(cat)(dog)(mouse)"`
-	EqualsStringPtr *string `valid:"Equals=(cat)(dog)(mouse)"`
+type SetTestStruct struct {
+	SetString    string  `valid:"Set=(cat)(dog)(mouse)"`
+	SetStringPtr *string `valid:"Set=(cat)(dog)(mouse)"`
 }
 
 type TestValidate struct {

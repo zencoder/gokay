@@ -7,22 +7,22 @@ import (
 	"strings"
 )
 
-// EqualsValidator generates code that will verify a fields does equals one of an allowed set of values
-// The EqualsValidator will look at the field or the dereferenced value of the field
+// SetValidator generates code that will verify a fields does Set one of an allowed set of values
+// The SetValidator will look at the field or the dereferenced value of the field
 // nil values for a field are not considered invalid
-type EqualsValidator struct {
+type SetValidator struct {
 	name string
 }
 
-// NewEqualsValidator holds the EqualsValidator state
-func NewEqualsValidator() *EqualsValidator {
-	return &EqualsValidator{name: "Equals"}
+// NewSetValidator holds the SetValidator state
+func NewSetValidator() *SetValidator {
+	return &SetValidator{name: "Set"}
 }
 
 // Generate generates validation code
-func (s *EqualsValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+func (s *SetValidator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
 	if len(params) == 0 {
-		return "", errors.New("Equals validation requires at least 1 parameter")
+		return "", errors.New("Set validation requires at least 1 parameter")
 	}
 
 	field := fieldStruct.Type
@@ -52,14 +52,14 @@ func (s *EqualsValidator) Generate(sType reflect.Type, fieldStruct reflect.Struc
 						errors%[1]s = append(errors%[1]s, errors.New("%[1]s must equal %[3]s"))
 				}`, fieldStruct.Name, condition, strings.Join(params, " or ")), nil
 		default:
-			return "", fmt.Errorf("Equals does not work on type '%s'", field.Kind())
+			return "", fmt.Errorf("Set does not work on type '%s'", field.Kind())
 		}
 	default:
-		return "", fmt.Errorf("Equals does not work on type '%s'", field.Kind())
+		return "", fmt.Errorf("Set does not work on type '%s'", field.Kind())
 	}
 }
 
 // Name provides access to the name field
-func (s *EqualsValidator) Name() string {
+func (s *SetValidator) Name() string {
 	return s.name
 }
