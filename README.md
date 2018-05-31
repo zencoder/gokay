@@ -1,4 +1,4 @@
-# gokay [![CircleCI](https://circleci.com/gh/zencoder/gokay.svg?style=svg&circle-token=90f42bc5cbb6fe74834f7649d67298130431d88d)](https://circleci.com/gh/zencoder/gokay) [![Coverage Status](https://coveralls.io/repos/github/zencoder/gokay/badge.svg?branch=circle-fixes&t=A2kWWv)](https://coveralls.io/github/zencoder/gokay?branch=circle-fixes)
+# gokay [![CircleCI](https://circleci.com/gh/zencoder/gokay.svg?style=svg&circle-token=90f42bc5cbb6fe74834f7649d67298130431d88d)](https://circleci.com/gh/zencoder/gokay) [![Coverage Status](https://coveralls.io/repos/github/zencoder/gokay/badge.svg?t=A2kWWv)](https://coveralls.io/github/zencoder/gokay)
 Codegenerated struct validation tool for go.
 
 ## How it works
