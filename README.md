@@ -70,6 +70,8 @@ Hex  | N/A | `(*)string` | Checks if a string field is a valid hexadecimal forma
 NotNil | N/A | pointers | Checks and fails if a pointer is nil
 Length | 1 | `(*)string` | Checks if a string's length matches the tag's parameter
 UUID | N/A | `(*)string` | Checks and fails if a string is not a valid UUID
+NotEqual | 1 | `(*)string` or `(*)number` | Checks and fails if field is equal to specific value
+Set | 1+ | `(*)string` | Checks and fails if field is not in a specific set of values
 
 ### Implicitly generated validations
 These sections of code will be added to the generated `Validate()` method regardless of a field's `valid` tag's contents.
