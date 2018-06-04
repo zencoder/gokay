@@ -57,3 +57,9 @@ type NotEqualTestPointerStruct struct {
 	NotEqualComplex128 *complex128 `valid:"NotEqual=(0)"`
 	NotEqualString     string      `valid:"NotEqual=(0)"`
 }
+
+// SetTestStruct is used in the Set unit tests
+type SetTestStruct struct {
+	SetString    string  `valid:"Set=(cat)(dog)(mouse)"`
+	SetStringPtr *string `valid:"Set=(cat)(dog)(mouse)"`
+}

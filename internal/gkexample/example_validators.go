@@ -470,3 +470,37 @@ func (s NotNilTestStruct) Validate() error {
 	}
 
 }
+func (s SetTestStruct) Validate() error {
+	em := make(gokay.ErrorMap)
+
+	// BEGIN SetString field Validations
+	errorsSetString := make(gokay.ErrorSlice, 0, 0)
+	// Set
+	if s.SetString != "" && !(s.SetString == "cat" || s.SetString == "dog" || s.SetString == "mouse") {
+		errorsSetString = append(errorsSetString, errors.New("SetString must equal cat or dog or mouse"))
+	}
+
+	if len(errorsSetString) > 0 {
+		em["SetString"] = errorsSetString
+	}
+	// END SetString field Validations
+
+	// BEGIN SetStringPtr field Validations
+	errorsSetStringPtr := make(gokay.ErrorSlice, 0, 0)
+	// Set
+	if s.SetStringPtr != nil && !(*s.SetStringPtr == "cat" || *s.SetStringPtr == "dog" || *s.SetStringPtr == "mouse") {
+		errorsSetStringPtr = append(errorsSetStringPtr, errors.New("SetStringPtr must equal cat or dog or mouse"))
+	}
+
+	if len(errorsSetStringPtr) > 0 {
+		em["SetStringPtr"] = errorsSetStringPtr
+	}
+	// END SetStringPtr field Validations
+
+	if len(em) > 0 {
+		return em
+	} else {
+		return nil
+	}
+
+}

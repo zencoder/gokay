@@ -1,4 +1,4 @@
-# gokay [![CircleCI](https://circleci.com/gh/zencoder/gokay.svg?style=svg&circle-token=90f42bc5cbb6fe74834f7649d67298130431d88d)](https://circleci.com/gh/zencoder/gokay) [![Coverage Status](https://coveralls.io/repos/github/zencoder/gokay/badge.svg?branch=circle-fixes&t=A2kWWv)](https://coveralls.io/github/zencoder/gokay?branch=circle-fixes)
+# gokay [![CircleCI](https://circleci.com/gh/zencoder/gokay.svg?style=svg&circle-token=90f42bc5cbb6fe74834f7649d67298130431d88d)](https://circleci.com/gh/zencoder/gokay) [![Coverage Status](https://coveralls.io/repos/github/zencoder/gokay/badge.svg?t=A2kWWv)](https://coveralls.io/github/zencoder/gokay)
 Codegenerated struct validation tool for go.
 
 ## How it works
@@ -70,6 +70,8 @@ Hex  | N/A | `(*)string` | Checks if a string field is a valid hexadecimal forma
 NotNil | N/A | pointers | Checks and fails if a pointer is nil
 Length | 1 | `(*)string` | Checks if a string's length matches the tag's parameter
 UUID | N/A | `(*)string` | Checks and fails if a string is not a valid UUID
+NotEqual | 1 | `(*)string` or `(*)number` | Checks and fails if field is equal to specific value
+Set | 1+ | `(*)string` | Checks and fails if field is not in a specific set of values
 
 ### Implicitly generated validations
 These sections of code will be added to the generated `Validate()` method regardless of a field's `valid` tag's contents.

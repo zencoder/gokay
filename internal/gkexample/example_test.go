@@ -405,3 +405,40 @@ func TestValidateNotEqual_Inalid(t *testing.T) {
 	err := underTest.Validate()
 	require.Equal(t, expected, err)
 }
+
+func TestValidateSet_Valid(t *testing.T) {
+	validCases := []string{"cat", "dog", "mouse"}
+
+	for _, tc := range validCases {
+		underTest := SetTestStruct{
+			SetString:    tc,
+			SetStringPtr: &tc,
+		}
+
+		err := underTest.Validate()
+		require.Nil(t, err)
+	}
+}
+
+func TestValidateSet_NilValid(t *testing.T) {
+	underTest := SetTestStruct{}
+
+	err := underTest.Validate()
+	require.Nil(t, err)
+}
+
+func TestValidateSet_Inalid(t *testing.T) {
+	expected := gokay.ErrorMap{
+		"SetString":    gokay.ErrorSlice{errors.New("SetString must equal cat or dog or mouse")},
+		"SetStringPtr": gokay.ErrorSlice{errors.New("SetStringPtr must equal cat or dog or mouse")},
+	}
+
+	gokay := "gokay"
+	underTest := SetTestStruct{
+		SetString:    "Cat",
+		SetStringPtr: &gokay,
+	}
+
+	err := underTest.Validate()
+	require.Equal(t, expected, err)
+}

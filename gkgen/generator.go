@@ -24,11 +24,13 @@ type ValidateGenerator struct {
 // - Hex: checks if a string is a valid hexadecimal format number
 // - Length: takes 1 integer argument and compares the length of a string field against that
 // - NotNil: Validate fails if field is nil
+// - Set: Validate fails if field is not in a specific set of values
 // - NotEqual: Validate fails if field is equal to specific value
 // - UUID: Checks and fails if a string is not a valid UUID
 func NewValidateGenerator() *ValidateGenerator {
 	v := &ValidateGenerator{make(map[string]Generater)}
 	v.AddValidation(NewNotNilValidator())
+	v.AddValidation(NewSetValidator())
 	v.AddValidation(NewNotEqualValidator())
 	v.AddValidation(NewLengthValidator())
 	v.AddValidation(NewHexValidator())
