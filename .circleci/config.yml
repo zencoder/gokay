@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      image: circleci/golang
+      - image: circleci/golang
     steps:
       - checkout
       - restore_cache:
@@ -19,3 +19,8 @@ jobs:
           name: Run unit tests
           command: |
             make
+experimental:
+  notify:
+    branches:
+      only:
+        - master
