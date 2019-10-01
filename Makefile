@@ -1,55 +1,36 @@
-COVERAGEDIR = coverage
-ifdef CIRCLE_ARTIFACTS
-  COVERAGEDIR = $(CIRCLE_ARTIFACTS)
-endif
+# Force-enable Go modules even if this project has been cloned within a user's GOPATH
+export GO111MODULE = on
 
-.DEFAULT_GOAL = all
-
+# Specify VERBOSE=1 to get verbose output from all executed commands
 ifdef VERBOSE
 V = -v
+X = -x
 else
 .SILENT:
 endif
 
 .PHONY: all
-all: build test cover
+all: build test
 
-.PHONY: install-deps
-install-deps:
-	glide install
+.PHONY: clean
+clean:
+	rm -rf bin/ coverage/ cucumber/logs/
+	go clean -i $(X) -cache -testcache
 
 .PHONY: build
 build:
-	if [ ! -d bin ]; then mkdir bin; fi
+	mkdir -p bin
 	go build $(V) -o bin/gokay
 
 .PHONY: fmt
 fmt:
-	find . -not -path "./vendor/*" -name '*.go' -type f | sed 's#\(.*\)/.*#\1#' | sort -u | xargs -n1 -I {} bash -c "cd {} && goimports -w *.go && gofmt -w -s -l *.go"
+	go fmt $(X) ./...
 
 .PHONY: test
 test:
-	if [ ! -d coverage ]; then mkdir coverage; fi
-	go test $(V) ./gkgen -race -cover -coverprofile=$(COVERAGEDIR)/gkgen.coverprofile
-	go test $(V) ./gokay -race -cover -coverprofile=$(COVERAGEDIR)/gokay.coverprofile
-	go test $(V) ./internal/gkexample -race -cover -coverprofile=$(COVERAGEDIR)/gkexample.coverprofile
+	mkdir -p coverage
+	go test $(V) -race -cover -coverprofile coverage/cover.profile ./...
 
 .PHONY: cover
 cover:
-	go tool cover -html=$(COVERAGEDIR)/gkgen.coverprofile -o $(COVERAGEDIR)/gkgen.html
-	go tool cover -html=$(COVERAGEDIR)/gokay.coverprofile -o $(COVERAGEDIR)/gokay.html
-	go tool cover -html=$(COVERAGEDIR)/gokay.coverprofile -o $(COVERAGEDIR)/gkexample.html
-
-.PHONY: tc
-tc: test cover
-
-.PHONY: coveralls
-coveralls:
-	gover $(COVERAGEDIR) $(COVERAGEDIR)/coveralls.coverprofile
-	goveralls -coverprofile=$(COVERAGEDIR)/coveralls.coverprofile -service=circle-ci -repotoken=$(COVERALLS_TOKEN)
-
-.PHONY: clean
-clean:
-	go clean
-	rm -f bin/gokay
-	rm -rf coverage/
+	go tool cover -html coverage/cover.profile
