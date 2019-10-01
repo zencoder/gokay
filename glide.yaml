@@ -1,9 +1,0 @@
-package: github.com/zencoder/gokay
-import:
-- package: github.com/pborman/uuid
-  version: ^1.1.0
-- package: github.com/stretchr/testify
-  version: ^v1.1.3
-- package: golang.org/x/text
-  subpackages:
-  - language
