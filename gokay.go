@@ -15,6 +15,7 @@ import (
 	"strings"
 
 	"github.com/pborman/uuid"
+	"golang.org/x/tools/imports"
 )
 
 // usage is a string used to provide a user with the application usage
@@ -111,12 +112,8 @@ func main() {
 
 	fmt.Fprintf(outWriter, "}\n")
 
-	// run goimports on the file
-	tmpimportsCmd := exec.Command("goimports", "-w", tempOut.Name())
-	tmpimportsCmd.Stdout = os.Stdout
-	tmpimportsCmd.Stderr = os.Stderr
-	if err := tmpimportsCmd.Run(); err != nil {
-		log.Fatalf("Failed running goimports on intermediate executable code: %v\n", err.Error())
+	if err := formatFile(tempOut.Name(), nil); err != nil {
+		log.Fatalf("Failed formatting intermediate executable code: %s", err.Error())
 	}
 
 	generateCmd := exec.Command("go", "run", tempFile)
@@ -126,11 +123,7 @@ func main() {
 		log.Fatalf("Failed executing intermediate executable to generate gokay validators failed: %v\n", err.Error())
 	}
 
-	// run goimports on the file path
-	importsCmd := exec.Command("goimports", "-w", outFilePath)
-	importsCmd.Stdout = os.Stdout
-	importsCmd.Stderr = os.Stderr
-	if err := importsCmd.Run(); err != nil {
+	if err := formatFile(outFilePath, nil); err != nil {
 		log.Fatalf("Failed running imports on gokay validators: %v\n", err.Error())
 	}
 
@@ -140,4 +133,19 @@ func main() {
 	}
 
 	log.Println("gokay finished file:", args[0])
+}
+
+func formatFile(filename string, src []byte) error {
+	mode := os.FileMode(0644)
+	formatted, err := imports.Process(filename, src, nil)
+	if err != nil {
+		return fmt.Errorf("failed formatting: %w", err)
+	}
+
+	err = ioutil.WriteFile(filename, formatted, mode)
+	if err != nil {
+		return fmt.Errorf("failed writing file: %w", err)
+	}
+
+	return nil
 }
