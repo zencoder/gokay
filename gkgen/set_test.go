@@ -47,7 +47,7 @@ func TestSetInts(t *testing.T) {
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(
 		t,
-		fmt.Sprintf("if s.%[1]s != \"\" && !(s.%[1]s == 3) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 3\"))\n}", field.Name),
+		fmt.Sprintf("if s.%[1]s != 0 && !(s.%[1]s == 3) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 3\"))\n}", field.Name),
 		code,
 	)
 
@@ -56,7 +56,7 @@ func TestSetInts(t *testing.T) {
 	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
 	require.Equal(
 		t,
-		fmt.Sprintf("if s.%[1]s != \"\" && !(s.%[1]s == 1 || s.%[1]s == 3 || s.%[1]s == 7) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 1 or 3 or 7\"))\n}", field.Name),
+		fmt.Sprintf("if s.%[1]s != 0 && !(s.%[1]s == 1 || s.%[1]s == 3 || s.%[1]s == 7) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 1 or 3 or 7\"))\n}", field.Name),
 		code,
 	)
 }

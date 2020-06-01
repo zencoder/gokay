@@ -51,7 +51,7 @@ func (s *SetValidator) Generate(sType reflect.Type, fieldStruct reflect.StructFi
 		}
 		condition := strings.Join(conditions, " || ")
 		return fmt.Sprintf(`
-			if s.%[1]s != "" && !(%[2]s) {
+			if s.%[1]s != 0 && !(%[2]s) {
 					errors%[1]s = append(errors%[1]s, errors.New("%[1]s must equal %[3]s"))
 			}`, fieldStruct.Name, condition, strings.Join(params, " or ")), nil
 	case reflect.Ptr:
