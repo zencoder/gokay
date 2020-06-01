@@ -35,6 +35,32 @@ func TestSet(t *testing.T) {
 	)
 }
 
+func TestSetInts(t *testing.T) {
+	nv := NewSetValidator()
+	e := SetTestStruct{}
+	et := reflect.TypeOf(e)
+
+	field, ok := et.FieldByName("SetInt")
+	require.True(t, ok)
+	code, err := nv.Generate(et, field, []string{"3"})
+	require.NoError(t, err)
+	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
+	require.Equal(
+		t,
+		fmt.Sprintf("if s.%[1]s != \"\" && !(s.%[1]s == 3) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 3\"))\n}", field.Name),
+		code,
+	)
+
+	code, err = nv.Generate(et, field, []string{"1", "3", "7"})
+	require.NoError(t, err)
+	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
+	require.Equal(
+		t,
+		fmt.Sprintf("if s.%[1]s != \"\" && !(s.%[1]s == 1 || s.%[1]s == 3 || s.%[1]s == 7) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 1 or 3 or 7\"))\n}", field.Name),
+		code,
+	)
+}
+
 func TestSetPointer(t *testing.T) {
 	nv := NewSetValidator()
 	e := SetTestStruct{}
@@ -57,6 +83,32 @@ func TestSetPointer(t *testing.T) {
 	require.Equal(
 		t,
 		fmt.Sprintf("if s.%[1]s != nil && !(*s.%[1]s == \"cat\" || *s.%[1]s == \"dog\" || *s.%[1]s == \"mouse\") {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal cat or dog or mouse\"))\n}", field.Name),
+		code,
+	)
+}
+
+func TestSetIntPointer(t *testing.T) {
+	nv := NewSetValidator()
+	e := SetTestStruct{}
+	et := reflect.TypeOf(e)
+
+	field, ok := et.FieldByName("SetIntPtr")
+	require.True(t, ok)
+	code, err := nv.Generate(et, field, []string{"1"})
+	require.NoError(t, err)
+	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
+	require.Equal(
+		t,
+		fmt.Sprintf("if s.%[1]s != nil && !(*s.%[1]s == 1) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 1\"))\n}", field.Name),
+		code,
+	)
+
+	code, err = nv.Generate(et, field, []string{"1", "3", "7"})
+	require.NoError(t, err)
+	code = strings.Replace(strings.TrimSpace(code), "\t", "", -1)
+	require.Equal(
+		t,
+		fmt.Sprintf("if s.%[1]s != nil && !(*s.%[1]s == 1 || *s.%[1]s == 3 || *s.%[1]s == 7) {\nerrors%[1]s = append(errors%[1]s, errors.New(\"%[1]s must equal 1 or 3 or 7\"))\n}", field.Name),
 		code,
 	)
 }

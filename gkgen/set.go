@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"strconv"
 )
 
 // SetValidator generates code that will verify a fields does Set one of an allowed set of values
@@ -38,6 +39,21 @@ func (s *SetValidator) Generate(sType reflect.Type, fieldStruct reflect.StructFi
 			if s.%[1]s != "" && !(%[2]s) {
 					errors%[1]s = append(errors%[1]s, errors.New("%[1]s must equal %[3]s"))
 			}`, fieldStruct.Name, condition, strings.Join(params, " or ")), nil
+	case reflect.Int, reflect.Int32, reflect.Int64:
+		conditions := make([]string, len(params))
+		for i, param := range params {
+			intParam, err := strconv.Atoi(param)
+			if err != nil {
+				return "", fmt.Errorf("Expected a set of Ints, but got param %q", param)
+			}
+
+			conditions[i] = fmt.Sprintf(`s.%[1]s == %[2]d`, fieldStruct.Name, intParam)
+		}
+		condition := strings.Join(conditions, " || ")
+		return fmt.Sprintf(`
+			if s.%[1]s != "" && !(%[2]s) {
+					errors%[1]s = append(errors%[1]s, errors.New("%[1]s must equal %[3]s"))
+			}`, fieldStruct.Name, condition, strings.Join(params, " or ")), nil
 	case reflect.Ptr:
 		field = field.Elem()
 		switch field.Kind() {
@@ -45,6 +61,21 @@ func (s *SetValidator) Generate(sType reflect.Type, fieldStruct reflect.StructFi
 			conditions := make([]string, len(params))
 			for i, param := range params {
 				conditions[i] = fmt.Sprintf(`*s.%[1]s == "%[2]s"`, fieldStruct.Name, param)
+			}
+			condition := strings.Join(conditions, " || ")
+			return fmt.Sprintf(`
+				if s.%[1]s != nil && !(%[2]s) {
+						errors%[1]s = append(errors%[1]s, errors.New("%[1]s must equal %[3]s"))
+				}`, fieldStruct.Name, condition, strings.Join(params, " or ")), nil
+		case reflect.Int, reflect.Int32, reflect.Int64:
+			conditions := make([]string, len(params))
+			for i, param := range params {
+				intParam, err := strconv.Atoi(param)
+				if err != nil {
+					return "", fmt.Errorf("Expected a set of Ints, but got param %q", param)
+				}
+
+				conditions[i] = fmt.Sprintf(`*s.%[1]s == %[2]d`, fieldStruct.Name, intParam)
 			}
 			condition := strings.Join(conditions, " || ")
 			return fmt.Sprintf(`
