@@ -62,4 +62,6 @@ type NotEqualTestPointerStruct struct {
 type SetTestStruct struct {
 	SetString    string  `valid:"Set=(cat)(dog)(mouse)"`
 	SetStringPtr *string `valid:"Set=(cat)(dog)(mouse)"`
+	SetInt       int     `valid:"Set=(1)(3)(7)"`
+	SetIntPtr    *int    `valid:"Set=(1)(3)(7)"`
 }
