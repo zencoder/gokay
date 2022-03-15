@@ -35,7 +35,7 @@ func (s *BCP47Validator) Generate(_ reflect.Type, fieldStruct reflect.StructFiel
 		}
 	}
 
-	exceptionSetOut := "bcp47Exceptions := map[string]bool {\n"
+	exceptionSetOut := fmt.Sprintf("bcp47Exceptions%s := map[string]bool {\n", fieldStruct.Name)
 	if len(exceptions) > 0 {
 		for _, exception := range exceptions {
 			exceptionSetOut += fmt.Sprintf("\"%s\": true,\n", exception)
@@ -62,7 +62,7 @@ func (s *BCP47Validator) Generate(_ reflect.Type, fieldStruct reflect.StructFiel
 		}
 		return fmt.Sprintf(`
 			%[1]s
-			if err := gokay.IsBCP47(%[2]s); err != nil && !bcp47Exceptions[%[3]s] {
+			if err := gokay.IsBCP47(%[2]s); err != nil && !bcp47Exceptions%[4]s[%[3]s] {
 				errors%[4]s = append(errors%[4]s, err)
 			}
 			`, exceptionSetOut, fieldPtr, fieldVal, fieldStruct.Name), nil
