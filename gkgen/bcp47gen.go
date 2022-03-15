@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 // BCP47Validator generates code that will verify if a field is a BCP47 compatible string
@@ -18,12 +19,29 @@ func NewBCP47Validator() *BCP47Validator {
 }
 
 // Generate generates validation code
-func (s *BCP47Validator) Generate(sType reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
-	if len(params) != 0 {
-		return "", errors.New("BCP47 takes no parameters")
+// 	Supports the "except" parameter with comma-separated values to allow language exceptions
+// 	Example Field: "FieldName string `valid:BCP47=(except=en-AB,en-WL)`"
+func (s *BCP47Validator) Generate(_ reflect.Type, fieldStruct reflect.StructField, params []string) (string, error) {
+	if len(params) > 1 {
+		return "", errors.New("BCP47 takes up to 1 parameter")
 	}
 
 	field := fieldStruct.Type
+
+	exceptions := []string{}
+	for _, param := range params {
+		if strings.HasPrefix(param, "except=") {
+			exceptions = strings.Split(strings.TrimPrefix(param, "except="), ",")
+		}
+	}
+
+	exceptionSetOut := "bcp47Exceptions := map[string]bool {\n"
+	if len(exceptions) > 0 {
+		for _, exception := range exceptions {
+			exceptionSetOut += fmt.Sprintf("\"%s\": true,\n", exception)
+		}
+	}
+	exceptionSetOut += "}"
 
 	isPtr := false
 	if field.Kind() == reflect.Ptr {
@@ -35,18 +53,19 @@ func (s *BCP47Validator) Generate(sType reflect.Type, fieldStruct reflect.Struct
 	case reflect.Ptr:
 		return "", errors.New("BCP47Validator does not support nested pointer fields")
 	case reflect.String:
+		fieldPtr := "s." + fieldStruct.Name
+		fieldVal := "s." + fieldStruct.Name
 		if isPtr {
-			return fmt.Sprintf(`
-				if err := gokay.IsBCP47(s.%[1]s); err != nil {
-					errors%[1]s = append(errors%[1]s, err)
-				}
-				`, fieldStruct.Name), nil
+			fieldVal = "*" + fieldVal
+		} else {
+			fieldPtr = "&" + fieldPtr
 		}
 		return fmt.Sprintf(`
-			if err := gokay.IsBCP47(&s.%[1]s); err != nil {
-				errors%[1]s = append(errors%[1]s, err)
+			%[1]s
+			if err := gokay.IsBCP47(%[2]s); err != nil && !bcp47Exceptions[%[3]s] {
+				errors%[4]s = append(errors%[4]s, err)
 			}
-			`, fieldStruct.Name), nil
+			`, exceptionSetOut, fieldPtr, fieldVal, fieldStruct.Name), nil
 	default:
 		if isPtr {
 			return "", fmt.Errorf("BCP47Validator does not support fields of type: '*%v'", field.Kind())
