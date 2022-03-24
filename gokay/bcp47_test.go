@@ -19,3 +19,8 @@ func TestIsBCP47_en(t *testing.T) {
 	str := "en"
 	require.NoError(t, IsBCP47(&str))
 }
+
+func TestIsBCP47_en_AB(t *testing.T) {
+	str := "en-AB"
+	require.NoError(t, IsBCP47(&str))
+}
