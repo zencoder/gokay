@@ -15,12 +15,12 @@ type Generater interface {
 	Name() string
 }
 
-// ValidateGenerator holds a map of identifiers and Generater's
+// ValidateGenerator holds a map of identifiers and Generator's
 type ValidateGenerator struct {
 	Generators map[string]Generater
 }
 
-// NewValidateGenerator creates a new pointer value of type ValidateGernerator
+// NewValidateGenerator creates a new pointer value of type ValidateGenerator
 // - Hex: checks if a string is a valid hexadecimal format number
 // - Length: takes 1 integer argument and compares the length of a string field against that
 // - NotNil: Validate fails if field is nil
@@ -42,7 +42,7 @@ func NewValidateGenerator() *ValidateGenerator {
 
 // AddValidation adds a Validation to a ValidateGenerator, that Validation can be applied to a struct
 // field using the string returned by
-// validater.Name()
+// validator.Name()
 func (s *ValidateGenerator) AddValidation(g Generater) error {
 	s.Generators[g.Name()] = g
 	return nil
@@ -81,6 +81,7 @@ func (s *ValidateGenerator) Generate(out io.Writer, i interface{}) error {
 			if err != nil {
 				return fmt.Errorf("Unable to parse tag: '%v'. Error: '%v'", tag, err)
 			}
+
 			for _, vc := range vcs {
 				if _, ok := s.Generators[vc.name]; !ok {
 					return fmt.Errorf("Unknown validation generator name: '%s'", vc.name)

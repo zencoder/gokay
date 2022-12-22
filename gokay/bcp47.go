@@ -3,7 +3,7 @@ package gokay
 import "golang.org/x/text/language"
 
 func IsBCP47(s *string) error {
-	if s == nil {
+	if s == nil || *s == "" {
 		return nil
 	}
 
