@@ -36,7 +36,6 @@ func NewValidateGenerator() *ValidateGenerator {
 	v.AddValidation(NewHexValidator())
 	v.AddValidation(NewUUIDValidator())
 	v.AddValidation(NewBCP47Validator())
-	v.AddValidation(NewBCP47OrEmptyValidator())
 	v.AddValidation(NewMinLengthValidator())
 	return v
 }
