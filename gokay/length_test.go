@@ -7,31 +7,31 @@ import (
 )
 
 func TestLengthNilString(t *testing.T) {
-	var expected = int64(10)
+	expected := int64(10)
 	var str *string
 	require.NoError(t, LengthString(expected, str))
 }
 
 func TestNotLengthNonMatch(t *testing.T) {
-	var expected = int64(10)
+	expected := int64(10)
 	var str string = "012345678"
 	require.Error(t, LengthString(expected, &str))
 }
 
 func TestNotLengthMatch(t *testing.T) {
-	var expected = int64(10)
+	expected := int64(10)
 	var str string = "0123456789"
 	require.NoError(t, LengthString(expected, &str))
 }
 
 func TestLengthSlice(t *testing.T) {
-	var expected = int64(10)
-	var actual = int64(99)
+	expected := int64(10)
+	actual := int64(99)
 	require.NoError(t, LengthSlice(expected, actual))
 }
 
 func TestMinLengthString(t *testing.T) {
-	var validCases = []struct {
+	validCases := []struct {
 		String    string
 		MinLength int64
 	}{
@@ -48,7 +48,7 @@ func TestMinLengthString(t *testing.T) {
 		})
 	}
 
-	var invalidCases = []struct {
+	invalidCases := []struct {
 		String    string
 		MinLength int64
 	}{

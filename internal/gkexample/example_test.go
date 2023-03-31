@@ -375,6 +375,7 @@ func TestValidateNotEqual_Valid(t *testing.T) {
 	err := underTest.Validate()
 	require.Nil(t, err)
 }
+
 func TestValidateNotEqual_NilValid(t *testing.T) {
 	underTest := NotEqualTestStruct{
 		NotEqualInt64:  1,

@@ -136,7 +136,7 @@ func main() {
 }
 
 func formatFile(filename string, src []byte) error {
-	mode := os.FileMode(0644)
+	mode := os.FileMode(0o644)
 	formatted, err := imports.Process(filename, src, nil)
 	if err != nil {
 		return fmt.Errorf("failed formatting: %w", err)

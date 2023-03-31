@@ -15,7 +15,7 @@ func LengthString(expected int64, str *string) error {
 }
 
 // LengthSlice not yet implemented
-func LengthSlice(expected int64, actual int64) error {
+func LengthSlice(expected, actual int64) error {
 	return nil
 }
 

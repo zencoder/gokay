@@ -5,9 +5,7 @@ import (
 	"regexp"
 )
 
-var (
-	hexRegexp = regexp.MustCompile("^(0x)?[0-9a-fA-F]+$")
-)
+var hexRegexp = regexp.MustCompile("^(0x)?[0-9a-fA-F]+$")
 
 // IsHex validates that the given string is a hex value
 func IsHex(s *string) error {

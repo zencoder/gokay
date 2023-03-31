@@ -59,7 +59,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		t.Parallel()
 		assert := require.New(t)
 		validator := NewMinLengthValidator()
-		var foo = true
+		foo := true
 		s := minLengthStruct{BoolPtr: &foo}
 		st := reflect.TypeOf(s)
 		field, found := st.FieldByName("BoolPtr")
@@ -88,7 +88,7 @@ func TestMinLengthGenerator(t *testing.T) {
 		t.Parallel()
 		assert := require.New(t)
 		validator := NewMinLengthValidator()
-		var foo = "foo"
+		foo := "foo"
 		s := minLengthStruct{StringPtr: &foo}
 		st := reflect.TypeOf(s)
 		field, found := st.FieldByName("StringPtr")

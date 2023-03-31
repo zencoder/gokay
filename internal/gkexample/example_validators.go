@@ -38,8 +38,8 @@ func (s Example) Validate() error {
 	} else {
 		return nil
 	}
-
 }
+
 func (s ExampleStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -126,8 +126,8 @@ func (s ExampleStruct) Validate() error {
 	} else {
 		return nil
 	}
-
 }
+
 func (s HasValidateImplicit) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -366,8 +366,8 @@ func (s HasValidateImplicit) Validate() error {
 	} else {
 		return nil
 	}
-
 }
+
 func (s NotEqualTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -424,8 +424,8 @@ func (s NotEqualTestStruct) Validate() error {
 	} else {
 		return nil
 	}
-
 }
+
 func (s NotNilTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -468,8 +468,8 @@ func (s NotNilTestStruct) Validate() error {
 	} else {
 		return nil
 	}
-
 }
+
 func (s SetTestStruct) Validate() error {
 	em := make(gokay.ErrorMap)
 
@@ -502,5 +502,4 @@ func (s SetTestStruct) Validate() error {
 	} else {
 		return nil
 	}
-
 }
