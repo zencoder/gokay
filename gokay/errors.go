@@ -3,7 +3,6 @@ package gokay
 import (
 	"bytes"
 	"fmt"
-	"strings"
 )
 
 // ErrorMap contains an entry for each invalid field in a struct. Values can be
@@ -21,12 +20,12 @@ func (em ErrorMap) Error() string {
 		if v != nil {
 			switch v.(type) {
 			case ErrorSlice, ErrorMap:
-				fmt.Fprintf(out, `"%s": %s`, k, v.Error())
+				fmt.Fprintf(out, `%q: %s`, k, v.Error())
 			default:
-				fmt.Fprintf(out, `"%s": "%s"`, k, strings.Replace(v.Error(), `"`, `\"`, -1))
+				fmt.Fprintf(out, `%q: %q`, k, v.Error())
 			}
 		} else {
-			fmt.Fprintf(out, `"%s": null`, k)
+			fmt.Fprintf(out, `%q: null`, k)
 		}
 	}
 	out.WriteRune('}')
@@ -51,7 +50,7 @@ func (ea ErrorSlice) Error() string {
 			case ErrorSlice, ErrorMap:
 				fmt.Fprintf(out, `%s`, ea[i].Error())
 			default:
-				fmt.Fprintf(out, `"%s"`, strings.Replace(ea[i].Error(), `"`, `\"`, -1))
+				fmt.Fprintf(out, `%q`, ea[i].Error())
 			}
 		} else {
 			out.WriteString("null")
